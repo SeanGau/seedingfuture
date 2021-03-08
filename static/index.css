@@ -1,0 +1,71 @@
+body {
+    font-family: 'Chiron Sans HK Pro WS', sans-serif;
+    height: 100vh;
+    width: 100vw;
+    overflow: hidden;
+}
+
+#header {
+    color: white;
+    height: 3em;
+    line-height: 3em;
+    padding-left: 3em;
+    background-image: url("./main_img.jpg");
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;
+}
+#collage-source {
+    z-index: 999;
+    height: 100vh;
+    width: 30vw;
+    position: fixed;
+    left: -30vw;
+    background-color: #666;
+    transition: .3s;
+}
+#collage-source.show {
+    left: 0;
+}
+
+#collage-source .source-img {
+    background-color: white;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;    
+    padding-top: 100%;
+}
+
+#collage-tools {
+    position: absolute;
+    width: 50%;
+    bottom: 4em;
+    left: 30em;
+}
+#collage-area {
+    position: relative;
+    display: flex;
+    background-color: #DDD;
+    align-items: center;
+    justify-content: center;
+    overflow: hidden;
+    width: 100vw;
+    height: calc(100vh - 3em);
+}
+
+.target {
+    position: absolute;
+    width: 200px;
+    height: 200px;
+}
+
+.target.selected button[name="collage-remove"] {
+    display: block !important;
+}
+
+.target img {
+    pointer-events: none;
+    user-select: none;
+    height: 100%;
+    width: 100%;
+}
