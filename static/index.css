@@ -40,10 +40,9 @@ body {
     position: absolute;
     width: 50%;
     bottom: 4em;
-    left: 30em;
+    left: 31vw;
 }
 #collage-area {
-    position: relative;
     display: flex;
     background-color: #DDD;
     align-items: center;
