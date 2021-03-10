@@ -2,7 +2,7 @@ import flask
 import hashlib
 from os import walk
 app = flask.Flask(__name__)
-app.jinja_env.globals['GLOBAL_TITLE'] = "Seeding Future 產生器"
+app.jinja_env.globals['GLOBAL_TITLE'] = "Seeding Future Collage"
 
 source_img = []
 for (dirpath, dirnames, filenames) in walk("./static/source"):

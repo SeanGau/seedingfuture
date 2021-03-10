@@ -34,6 +34,11 @@ body {
     background-size: cover;
     background-repeat: no-repeat;    
     padding-top: 100%;
+    filter: opacity(0.8);
+    transition: .3s;
+}
+#collage-source .source-img:hover {
+    filter: opacity(1);
 }
 
 #collage-tools {

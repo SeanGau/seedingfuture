@@ -3,6 +3,7 @@ const move = new Moveable(document.body, {
   resizable: true,
   rotatable: true,
   warpable: true,
+  keepRatio: false,
   origin: false,
   edge: true,
   throttleDrag: 0,
@@ -16,8 +17,8 @@ let frame = {
 
 move.on("drag", e => {
   //console.log(e);
-  $(e.target).css({ left: `${e.left}px`, top: `${e.top}px` });
-  //e.target.style.transform = e.transform;
+  //$(e.target).css({ left: `${e.left}px`, top: `${e.top}px` });
+  e.target.style.transform = e.transform;
 });
 
 move.on("resize", e => {
@@ -44,7 +45,7 @@ $("#collage-area").on("click", function () {
   $(".target.selected").removeClass("selected");
 })
 
-$("body").on("click", "button", function() {
+$("body > div").on("click", "button", function() {
   move.target = null;
   $(".target.selected").removeClass("selected");
 })
@@ -84,4 +85,17 @@ $("#collage-source .source-img").on("click", function () {
 
 $("#collage-area").on("click", ".target button[name='collage-remove']", function () {
   $(this).parents(".target").remove();
+  move.target = null;
+  $(".target.selected").removeClass("selected");
 })
+
+$(window).keydown(function(e){
+  if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
+    move.keepRatio = true;
+  }
+});
+$(window).keyup(function(e){
+  if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
+    move.keepRatio = false;
+  }
+});
