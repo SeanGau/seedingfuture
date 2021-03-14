@@ -45,7 +45,7 @@ $("#collage-area").on("click", function () {
   $(".target.selected").removeClass("selected");
 })
 
-$("body > div").on("click", "button", function() {
+$("body > div").on("click", "button", function () {
   move.target = null;
   $(".target.selected").removeClass("selected");
 })
@@ -65,6 +65,16 @@ $("#collage-area").on("click", ".target", function (e) {
 
 $("#collage-tools button[name='collage-add']").on("click", function () {
   $("#collage-source").toggleClass("show");
+})
+
+$("#collage-tools button[name='collage-export']").on("click", function () {
+  html2canvas(document.body.querySelector("#collage-area")).then(function (canvas) {
+    var img = canvas.toDataURL("image/png");
+    var link = document.createElement('a');
+    link.download = "seedingfuture.png";
+    link.href = img;
+    link.click();
+  });
 })
 
 $("#collage-tools button[name='collage-clear']").on("click", function () {
@@ -89,12 +99,12 @@ $("#collage-area").on("click", ".target button[name='collage-remove']", function
   $(".target.selected").removeClass("selected");
 })
 
-$(window).keydown(function(e){
+$(window).keydown(function (e) {
   if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
     move.keepRatio = true;
   }
 });
-$(window).keyup(function(e){
+$(window).keyup(function (e) {
   if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
     move.keepRatio = false;
   }

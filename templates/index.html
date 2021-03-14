@@ -38,13 +38,16 @@
                             class="fas fa-plus"></i></button>
                     <button class="btn btn-danger mr-1" type="button" title="clear" name="collage-clear"><i
                             class="fas fa-snowplow"></i></button>
+                    <button class="btn btn-danger mr-1" type="button" title="export" name="collage-export"><i
+                            class="fas fa-file-download"></i></button>
                 </div>
                 <div class="row g-2">
                     {% for source in sources %}
                     {% set source_url = url_for('static', filename='source/'+source['filename'])%}
                     <div class="col-4">
                         <a href="#">
-                            <div class="source-img" style="background-image: url({{source_url}});" data-src={{source_url}}>
+                            <div class="source-img" style="background-image: url({{source_url}});"
+                                data-src={{source_url}}>
                             </div>
                         </a>
                     </div>
@@ -52,7 +55,7 @@
                 </div>
             </div>
             <div id="collage-area">
-                
+
             </div>
         </div>
     </div>
@@ -67,5 +70,6 @@
         integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG"
         crossorigin="anonymous"></script>
     <script src="//daybrush.com/moveable/release/latest/dist/moveable.min.js"></script>
+    <script src={{url_for('static', filename='html2canvas.min.js' )}}></script>
     <script src={{url_for('static', filename='index.js' )}}></script>
 </body>
