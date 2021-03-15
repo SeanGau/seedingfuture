@@ -43,12 +43,12 @@ move.on("warp", ({ target, transform, }) => {
 $("#collage-area").on("click", function () {
   move.target = null;
   $(".target.selected").removeClass("selected");
-})
+});
 
 $("body > div").on("click", "button", function () {
   move.target = null;
   $(".target.selected").removeClass("selected");
-})
+});
 
 $("#collage-area").on("click", ".target", function (e) {
   e.stopPropagation();
@@ -61,25 +61,29 @@ $("#collage-area").on("click", ".target", function (e) {
   else {
     //move.resizable = !move.resizable;
   }
-})
+});
 
 $("#collage-tools button[name='collage-add']").on("click", function () {
   $("#collage-source").toggleClass("show");
-})
+});
 
 $("#collage-tools button[name='collage-export']").on("click", function () {
+  $("#collage-area").css({"border": "0"});
   html2canvas(document.body.querySelector("#collage-area")).then(function (canvas) {
+    canvas.width = canvas.width;
+    canvas.height = canvas.height;
     var img = canvas.toDataURL("image/png");
     var link = document.createElement('a');
     link.download = "seedingfuture.png";
     link.href = img;
     link.click();
   });
-})
+  $("#collage-area").css({"border": ""});
+});
 
 $("#collage-tools button[name='collage-clear']").on("click", function () {
   $("#collage-area").html("");
-})
+});
 
 $("#collage-source .source-img").on("click", function () {
   let templateDom = $(`
@@ -91,13 +95,13 @@ $("#collage-source .source-img").on("click", function () {
   `);
   $("img", templateDom).attr("src", $(this).data("src"));
   $("#collage-area").append(templateDom);
-})
+});
 
 $("#collage-area").on("click", ".target button[name='collage-remove']", function () {
   $(this).parents(".target").remove();
   move.target = null;
   $(".target.selected").removeClass("selected");
-})
+});
 
 $(window).keydown(function (e) {
   if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
@@ -108,4 +112,31 @@ $(window).keyup(function (e) {
   if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
     move.keepRatio = false;
   }
+});
+
+$(window).resize(function () {
+  console.log("resized");
+  $("#collage-area").css({ "width": "100%", "height": "100%" });
+  let c_w = $("#collage-area").width();
+  let c_h = $("#collage-area").height();
+  if (c_w >= c_h) {
+    if (c_w > c_h * 16 / 9) {
+      $("#collage-area").width(c_h * 16 / 9);
+    }
+    else {
+      $("#collage-area").height(c_w * 9 / 16);
+    }
+  }
+  else {
+    if (c_w > c_h * 9 / 16) {
+      $("#collage-area").width(c_h * 9 / 16);
+    }
+    else {
+      $("#collage-area").height(c_w * 16 / 9);
+    }
+  }
+});
+
+$(document).ready(function () {
+  $(window).resize();
 });

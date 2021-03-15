@@ -38,13 +38,13 @@
                             class="fas fa-plus"></i></button>
                     <button class="btn btn-danger mr-1" type="button" title="clear" name="collage-clear"><i
                             class="fas fa-snowplow"></i></button>
-                    <button class="btn btn-danger mr-1" type="button" title="export" name="collage-export"><i
+                    <button class="btn btn-primary mr-1" type="button" title="export" name="collage-export"><i
                             class="fas fa-file-download"></i></button>
                 </div>
                 <div class="row g-2">
                     {% for source in sources %}
                     {% set source_url = url_for('static', filename='source/'+source['filename'])%}
-                    <div class="col-4">
+                    <div class="col-md-4">
                         <a href="#">
                             <div class="source-img" style="background-image: url({{source_url}});"
                                 data-src={{source_url}}>
