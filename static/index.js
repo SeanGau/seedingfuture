@@ -11,9 +11,7 @@ const move = new Moveable(document.body, {
   throttleRotate: 5,
 });
 
-let frame = {
-  translate: [0, 0],
-};
+let layer_array = [];
 
 move.on("drag", e => {
   //console.log(e);
@@ -45,7 +43,7 @@ $("#collage-area").on("click", function () {
   $(".target.selected").removeClass("selected");
 });
 
-$("body > div").on("click", "button", function () {
+$("body > div.d-flex").on("click", "button", function () {
   move.target = null;
   $(".target.selected").removeClass("selected");
 });
@@ -68,17 +66,18 @@ $("#collage-tools button[name='collage-add']").on("click", function () {
 });
 
 $("#collage-tools button[name='collage-export']").on("click", function () {
-  $("#collage-area").css({"border": "0"});
+  $("#collage-area").css({ "border": "0" });
   html2canvas(document.body.querySelector("#collage-area")).then(function (canvas) {
-    canvas.width = canvas.width;
-    canvas.height = canvas.height;
+    console.log(canvas.width);
+    console.log(canvas.height);
     var img = canvas.toDataURL("image/png");
     var link = document.createElement('a');
     link.download = "seedingfuture.png";
     link.href = img;
     link.click();
   });
-  $("#collage-area").css({"border": ""});
+  $("#collage-area").css({ "border": "" });
+  $(window).resize();
 });
 
 $("#collage-tools button[name='collage-clear']").on("click", function () {
@@ -86,21 +85,15 @@ $("#collage-tools button[name='collage-clear']").on("click", function () {
 });
 
 $("#collage-source .source-img").on("click", function () {
+  let ms = Date.now();
   let templateDom = $(`
-  <div class="target">
+  <div class="target" id="target-${ms}">
     <img src="">
-    <button class="btn btn-danger mt-1 d-none" type="button" title="delete" name="collage-remove"><i
-            class="far fa-trash-alt"></i></button>
   </div>
   `);
   $("img", templateDom).attr("src", $(this).data("src"));
   $("#collage-area").append(templateDom);
-});
-
-$("#collage-area").on("click", ".target button[name='collage-remove']", function () {
-  $(this).parents(".target").remove();
-  move.target = null;
-  $(".target.selected").removeClass("selected");
+  layer_array.push("target-" + ms);
 });
 
 $(window).keydown(function (e) {
@@ -115,7 +108,6 @@ $(window).keyup(function (e) {
 });
 
 $(window).resize(function () {
-  console.log("resized");
   $("#collage-area").css({ "width": "100%", "height": "100%" });
   let c_w = $("#collage-area").width();
   let c_h = $("#collage-area").height();
@@ -137,6 +129,47 @@ $(window).resize(function () {
   }
 });
 
+$(document).on("click", ".moveable-buttons button[name='collage-remove']", function () {
+  console.log("remove");
+  $(move.target).remove();
+  move.target = null;
+  $(".target.selected").removeClass("selected");
+});
+
+$(document).on("click", ".moveable-buttons button[name='collage-up']", function () {
+  let targetDom = $(move.target);
+  let target_id = targetDom.attr("id");
+  let cur_z = layer_array.indexOf(target_id);
+  if (cur_z < layer_array.length - 1) {
+    let next_id = layer_array[cur_z + 1];
+    targetDom.insertAfter($(`#${next_id}`));
+
+    layer_array[cur_z + 1] = target_id;
+    layer_array[cur_z] = next_id;
+  }
+});
+
+$(document).on("click", ".moveable-buttons button[name='collage-down']", function () {
+  let targetDom = $(move.target);
+  let target_id = targetDom.attr("id");
+  let cur_z = layer_array.indexOf(target_id);
+  if (cur_z > 0) {
+    let next_id = layer_array[cur_z - 1];
+    targetDom.insertBefore($(`#${next_id}`));
+
+    layer_array[cur_z - 1] = target_id;
+    layer_array[cur_z] = next_id;
+  }
+});
+
 $(document).ready(function () {
+  let controlButtonsDom = $(`  
+    <div class="moveable-buttons">  
+      <button class="btn btn-danger mt-1 target-control" type="button" title="delete" name="collage-remove"><i class="far fa-trash-alt"></i></button>
+      <button class="btn btn-secondary mt-1 target-control" type="button" title="up" name="collage-up"><i class="fas fa-arrow-up"></i></button>
+      <button class="btn btn-secondary mt-1 target-control" type="button" title="down" name="collage-down"><i class="fas fa-arrow-down"></i></button>
+    </div>
+  `);
+  $(".moveable-control-box").append(controlButtonsDom);
   $(window).resize();
 });

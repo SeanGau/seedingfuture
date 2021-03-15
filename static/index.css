@@ -55,7 +55,7 @@ body {
     justify-content: center;
     overflow: hidden;
     margin: auto;
-    border: 0.5em solid #333;
+    border: 1em solid #333;
 }
 
 .target {
@@ -64,13 +64,14 @@ body {
     height: 200px;
 }
 
-.target.selected button[name="collage-remove"] {
-    display: block !important;
-}
-
 .target img {
     pointer-events: none;
     user-select: none;
     height: 100%;
     width: 100%;
+}
+
+.moveable-buttons {
+    position: absolute;
+    right: 0.5rem;
 }
