@@ -13,6 +13,12 @@ const move = new Moveable(document.body, {
 
 let layer_array = [];
 
+function arrayRemove(arr, value) {
+  layer_array = arr.filter(function (ele) {
+    return ele != value;
+  });
+}
+
 move.on("drag", e => {
   //console.log(e);
   //$(e.target).css({ left: `${e.left}px`, top: `${e.top}px` });
@@ -68,8 +74,6 @@ $("#collage-tools button[name='collage-add']").on("click", function () {
 $("#collage-tools button[name='collage-export']").on("click", function () {
   $("#collage-area").css({ "border": "0" });
   html2canvas(document.body.querySelector("#collage-area")).then(function (canvas) {
-    console.log(canvas.width);
-    console.log(canvas.height);
     var img = canvas.toDataURL("image/png");
     var link = document.createElement('a');
     link.download = "seedingfuture.png";
@@ -82,6 +86,7 @@ $("#collage-tools button[name='collage-export']").on("click", function () {
 
 $("#collage-tools button[name='collage-clear']").on("click", function () {
   $("#collage-area").html("");
+  layer_array = [];
 });
 
 $("#collage-source .source-img").on("click", function () {
@@ -130,7 +135,7 @@ $(window).resize(function () {
 });
 
 $(document).on("click", ".moveable-buttons button[name='collage-remove']", function () {
-  console.log("remove");
+  arrayRemove(layer_array, $(move.target).attr("id"));
   $(move.target).remove();
   move.target = null;
   $(".target.selected").removeClass("selected");

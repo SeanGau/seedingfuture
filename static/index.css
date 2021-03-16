@@ -18,12 +18,13 @@ body {
 }
 #collage-source {
     z-index: 999;
-    height: 100vh;
+    height: calc(100vh - 3em);
     width: 30vw;
     position: fixed;
     left: -30vw;
     background-color: #666;
     transition: .3s;
+    border: 0.5em solid #222;
 }
 #collage-source.show {
     left: 0;
@@ -32,7 +33,7 @@ body {
 #collage-source .source-img {
     background-color: white;
     background-position: center center;
-    background-size: cover;
+    background-size: contain;
     background-repeat: no-repeat;    
     padding-top: 100%;
     filter: opacity(0.8);
@@ -45,7 +46,7 @@ body {
 #collage-tools {
     position: absolute;
     width: 10em;
-    bottom: 4em;
+    bottom: 0.5em;
     left: 31vw;
 }
 #collage-area {
@@ -61,7 +62,6 @@ body {
 .target {
     position: absolute;
     width: 200px;
-    height: 200px;
 }
 
 .target img {
