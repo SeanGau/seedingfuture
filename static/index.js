@@ -101,6 +101,11 @@ $("#collage-source .source-img").on("click", function () {
   layer_array.push("target-" + ms);
 });
 
+$('#bgcolor').on('input', function () {
+  let bgcolor = $(this).val();
+  $("#collage-area").css({"background-color": bgcolor});
+});
+
 $(window).keydown(function (e) {
   if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
     move.keepRatio = true;

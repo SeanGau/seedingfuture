@@ -45,10 +45,18 @@ body {
 
 #collage-tools {
     position: absolute;
-    width: 10em;
+    width: 20em;
     bottom: 0.5em;
     left: 31vw;
 }
+
+#bgcolor {
+    display: inline-block;
+    height: 2.5em;
+    vertical-align: middle;
+    margin-left: 1em;
+}
+
 #collage-area {
     display: flex;
     background-color: #DDD;
