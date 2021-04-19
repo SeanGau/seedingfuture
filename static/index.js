@@ -71,14 +71,34 @@ $("#collage-tools button[name='collage-add']").on("click", function () {
   $("#collage-source").toggleClass("show");
 });
 
-$("#collage-tools button[name='collage-export']").on("click", function () {
+function share_fb(canvas) {
+  dataUrl = canvas.toDataURL(),
+  imageFoo = document.createElement('img');
+  imageFoo.src = dataUrl;
+
+  // Style your image here
+  imageFoo.style.width = '100px';
+  imageFoo.style.height = '100px';
+
+  // After you are done styling it, append it to the BODY element
+  document.body.appendChild(imageFoo);
+  window.open('http://www.facebook.com/sharer.php?u=' + encodeURIComponent(dataUrl) + '&t=' + encodeURIComponent(`seedingfuture`), 'sharer', 'toolbar=0,status=0,width=626,height=436');
+}
+
+$("#collage-tools button[name='collage-export'],#collage-tools button[name='collage-share']").on("click", function () {
   $("#collage-area").css({ "border": "0" });
+  let now_work = $(this).attr("title");
   html2canvas(document.body.querySelector("#collage-area")).then(function (canvas) {
     var img = canvas.toDataURL("image/png");
     var link = document.createElement('a');
-    link.download = "seedingfuture.png";
+    var date = new Date();
+    var time = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;    
+    link.download = `seedingfuture_${time}.png`;
     link.href = img;
-    link.click();
+    if(now_work=="export")
+      link.click();
+    else
+      share_fb(canvas);
   });
   $("#collage-area").css({ "border": "" });
   $(window).resize();
@@ -103,7 +123,7 @@ $("#collage-source .source-img").on("click", function () {
 
 $('#bgcolor').on('input', function () {
   let bgcolor = $(this).val();
-  $("#collage-area").css({"background-color": bgcolor});
+  $("#collage-area").css({ "background-color": bgcolor });
 });
 
 $(window).keydown(function (e) {
