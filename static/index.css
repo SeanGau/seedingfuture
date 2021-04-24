@@ -60,6 +60,9 @@ body {
 #collage-area {
     display: flex;
     background-color: #DDD;
+    background-size: cover;
+    background-image: url("paper1.jpg");
+    background-blend-mode: multiply;
     align-items: center;
     justify-content: center;
     overflow: hidden;
