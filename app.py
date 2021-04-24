@@ -1,16 +1,23 @@
 import flask
 import os, json, hashlib
+from PIL import Image
 from flask_sqlalchemy import SQLAlchemy
 
 app = flask.Flask(__name__)
 app.jinja_env.globals['GLOBAL_TITLE'] = "Seeding Future Collage"
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL'].replace("postgres://","postgresql://")
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'encoding': 'utf-8', 'json_serializer': lambda obj: obj, 'echo': False}
+app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 source_img = []
 for (dirpath, dirnames, filenames) in os.walk("./static/source"):
     for filename in filenames:
+        #read the image
+        im = Image.open("./static/source/"+filename)
+        im.thumbnail((200,200))
+        im.save("./static/source/thumb/"+filename)
+
         _dict = {
             "filename": filename,
             "hashed": hashlib.sha1(filename.encode()).hexdigest() 
@@ -28,6 +35,9 @@ def index():
 def submit():
     if flask.request.method == 'POST':
         _data_dict = flask.request.get_json()
+        if len(_data_dict['collage']) < 1:
+            return "Empty data"
+
         _data = json.dumps(_data_dict, ensure_ascii=False).replace('\'','\"').replace('%','%%')
         _sql = f"INSERT INTO collages.\"collage-datas\"(data) VALUES (\'{_data}\');"
         db.session.execute(_sql)

@@ -70,9 +70,10 @@
                 <div class="row g-2">
                     {% for source in sources %}
                     {% set source_url = url_for('static', filename='source/'+source['filename'])%}
+                    {% set thumb_url = url_for('static', filename='source/thumb/'+source['filename'])%}
                     <div class="col-md-4">
                         <a href="#">
-                            <div class="source-img" style="background-image: url({{source_url}});"
+                            <div class="source-img" style="background-image: url({{thumb_url}});"
                                 data-src={{source_url}}>
                             </div>
                         </a>

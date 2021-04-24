@@ -19,6 +19,13 @@ function arrayRemove(arr, value) {
   });
 }
 
+function loadData(data) {
+  Object.keys(data['collage']).forEach(element => {
+    $("#collage-area").append(data['collage'][element]['outerHTML']);
+    layer_array.push(element);
+  });
+}
+
 move.on("drag", e => {
   //console.log(e);
   //$(e.target).css({ left: `${e.left}px`, top: `${e.top}px` });
@@ -85,7 +92,9 @@ function share_fb(canvas) {
   window.open('http://www.facebook.com/sharer.php?u=' + encodeURIComponent(dataUrl) + '&t=' + encodeURIComponent(`seedingfuture`), 'sharer', 'toolbar=0,status=0,width=626,height=436');
 }
 
-$("#download-form").on("submit", function () {
+$("#download-form").on("submit", function (e) {
+  e.preventDefault();
+
   $("#collage-area").css({ "border": "0" });
   let export_data = {
     "data": {
@@ -116,6 +125,8 @@ $("#download-form").on("submit", function () {
     link.download = `seedingfuture_${time}.png`;
     link.href = img;
     link.click();
+
+    localStorage.setItem('export_data', JSON.stringify(export_data));
 
     console.log(export_data);
     $.ajax({
@@ -240,4 +251,9 @@ $(document).ready(function () {
   `);
   $(".moveable-control-box").append(controlButtonsDom);
   $(window).resize();
+
+  let last_data = localStorage.getItem('export_data');
+  if(last_data != undefined) {    
+    loadData(JSON.parse(last_data));
+  }
 });
