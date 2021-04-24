@@ -73,7 +73,7 @@ $("#collage-tools button[name='collage-add']").on("click", function () {
 
 function share_fb(canvas) {
   dataUrl = canvas.toDataURL(),
-  imageFoo = document.createElement('img');
+    imageFoo = document.createElement('img');
   imageFoo.src = dataUrl;
 
   // Style your image here
@@ -85,21 +85,50 @@ function share_fb(canvas) {
   window.open('http://www.facebook.com/sharer.php?u=' + encodeURIComponent(dataUrl) + '&t=' + encodeURIComponent(`seedingfuture`), 'sharer', 'toolbar=0,status=0,width=626,height=436');
 }
 
-$("#collage-tools button[name='collage-export'],#collage-tools button[name='collage-share']").on("click", function () {
+$("#download-form").on("submit", function () {
   $("#collage-area").css({ "border": "0" });
-  let now_work = $(this).attr("title");
+  let export_data = {
+    "data": {
+      "width": $("#collage-area").width(),
+      "height": $("#collage-area").height(),
+      "background": $("#collage-area").css("background-color"),
+      "email": $("#InputEmail", this).val(),
+      "name": $("#InputName", this).val()
+    },
+    "collage": {}
+  };
+
   html2canvas(document.body.querySelector("#collage-area")).then(function (canvas) {
     var img = canvas.toDataURL("image/png");
     var link = document.createElement('a');
     var date = new Date();
-    var time = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;    
+    var time = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
+
+    layer_array.forEach(element => {
+      let targetDom = $(`#collage-area #${element}`);
+      targetDom.css("transform", targetDom.css("transform"));
+
+      export_data["collage"][element] = {
+        "outerHTML": $(`#collage-area #${element}`).prop("outerHTML")
+      };
+    });
+
     link.download = `seedingfuture_${time}.png`;
     link.href = img;
-    if(now_work=="export")
-      link.click();
-    else
-      share_fb(canvas);
+    link.click();
+
+    console.log(export_data);
+    $.ajax({
+      type: "POST",
+      url: "/function/submit",
+      data: JSON.stringify(export_data),
+      success: function (cb) {
+        console.log(cb);
+      },
+      contentType: "application/json"
+    });
   });
+
   $("#collage-area").css({ "border": "" });
   $(window).resize();
 });
@@ -192,12 +221,21 @@ $(document).on("click", ".moveable-buttons button[name='collage-down']", functio
   }
 });
 
+$(document).on("click", ".moveable-buttons button[name='collage-flip']", function () {
+  let targetDom = $(move.target);
+  let target_id = targetDom.attr("id");
+  let now_trans = targetDom.css("transform");
+  targetDom.css("transform", now_trans + " scaleX(-1)");
+  targetDom.trigger('move');
+});
+
 $(document).ready(function () {
   let controlButtonsDom = $(`  
     <div class="moveable-buttons">  
       <button class="btn btn-danger mt-1 target-control" type="button" title="delete" name="collage-remove"><i class="far fa-trash-alt"></i></button>
       <button class="btn btn-secondary mt-1 target-control" type="button" title="up" name="collage-up"><i class="fas fa-arrow-up"></i></button>
       <button class="btn btn-secondary mt-1 target-control" type="button" title="down" name="collage-down"><i class="fas fa-arrow-down"></i></button>
+      <button class="btn btn-secondary mt-1 target-control" type="button" title="flip" name="collage-flip"><i class="fas fa-arrows-alt-h"></i></button>
     </div>
   `);
   $(".moveable-control-box").append(controlButtonsDom);

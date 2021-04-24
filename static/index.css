@@ -84,3 +84,8 @@ body {
     position: absolute;
     right: 0.5rem;
 }
+
+.target-control {
+    width: 2.5em;
+    height: 2.5em;
+}
