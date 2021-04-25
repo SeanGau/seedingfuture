@@ -57,15 +57,25 @@
         <div class="flex-grow-1 d-flex">
             <div id="collage-source" class="container p-4">
                 <div id="collage-tools">
-                    <button class="btn btn-warning mr-1" type="button" title="add" name="collage-add"><i
-                            class="fas fa-plus"></i></button>
-                    <button class="btn btn-danger mr-1" type="button" title="clear" name="collage-clear"><i
-                            class="fas fa-snowplow"></i></button>
-                    <button class="btn btn-primary mr-1" type="button" data-bs-toggle="modal"
-                        data-bs-target="#submitModal"><i class="fas fa-file-download"></i></button>
-                    <input type="color" id="bgcolor" title="background color" name="bgcolor" value="#DDDDDD" />
-
-
+                    <div class="moveable-buttons d-none">
+                        <button class="btn btn-danger mt-1 target-control" type="button" title="delete"
+                            name="collage-remove"><i class="far fa-trash-alt"></i></button>
+                        <button class="btn btn-secondary mt-1 target-control" type="button" title="layer up"
+                            name="collage-up"><i class="fas fa-arrow-up"></i></button>
+                        <button class="btn btn-secondary mt-1 target-control" type="button" title="layer down"
+                            name="collage-down"><i class="fas fa-arrow-down"></i></button>
+                        <button class="btn btn-secondary mt-1 target-control" type="button" title="flip"
+                            name="collage-flip"><i class="fas fa-arrows-alt-h"></i></button>
+                    </div>
+                    <div class="source-controls">
+                        <button class="btn btn-warning mr-1" type="button" title="add" name="collage-add"><i
+                                class="fas fa-plus"></i></button>
+                        <button class="btn btn-danger mr-1" type="button" title="clear" name="collage-clear"><i
+                                class="fas fa-snowplow"></i></button>
+                        <button class="btn btn-primary mr-1" type="button" data-bs-toggle="modal"
+                            data-bs-target="#submitModal"><i class="fas fa-file-download"></i></button>
+                        <input type="color" id="bgcolor" title="background color" name="bgcolor" value="#DDDDDD" />
+                    </div>
                 </div>
                 <div class="row g-2">
                     {% for source in sources %}

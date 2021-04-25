@@ -2,7 +2,6 @@ const move = new Moveable(document.body, {
   draggable: true,
   resizable: true,
   rotatable: true,
-  warpable: true,
   keepRatio: false,
   origin: false,
   edge: true,
@@ -13,6 +12,17 @@ const move = new Moveable(document.body, {
 
 let layer_array = [];
 
+function rgbToHex(r, g, b) {
+  function componentToHex(c) {
+    let hex = c.toString(16);
+    return hex.length == 1 ? "0" + hex : hex;
+  }
+  r = Number(r);
+  g = Number(g);
+  b = Number(b);
+  return "#" + componentToHex(r) + componentToHex(g) + componentToHex(b);
+}
+
 function arrayRemove(arr, value) {
   layer_array = arr.filter(function (ele) {
     return ele != value;
@@ -20,11 +30,27 @@ function arrayRemove(arr, value) {
 }
 
 function loadData(data) {
+  let orig_w = data['data']['width'];  
+  let now_w = $("#collage-area").width();
+  let bg_color = data['data']['background'];
+  $("#collage-area").css({ "background-color": bg_color });
+  bg_color = bg_color.replace("rgb(","").replace(")","");
+  bg_color = bg_color.split(",");
+  console.log(rgbToHex(...bg_color));
+  $("#bgcolor").val(rgbToHex(...bg_color));
+
   Object.keys(data['collage']).forEach(element => {
     $("#collage-area").append(data['collage'][element]['outerHTML']);
     layer_array.push(element);
   });
 }
+
+
+const frame = {
+  rotate: 0,
+  translate: [0, 0],
+  scale: [1, 1],
+};
 
 move.on("drag", e => {
   //console.log(e);
@@ -32,33 +58,55 @@ move.on("drag", e => {
   e.target.style.transform = e.transform;
 });
 
-move.on("resize", e => {
-  e.target.style.width = `${e.width}px`;
-  e.target.style.height = `${e.height}px`;
+move.on("resizeStart", ({ target, set, setOrigin, dragStart }) => {
+  // Set origin if transform-orgin use %.
+  setOrigin(["%", "%"]);
+
+  const style = window.getComputedStyle(target);
+  const cssWidth = parseFloat(style.width);
+  const cssHeight = parseFloat(style.height);
+  set([cssWidth, cssHeight]);
+
+  dragStart && dragStart.set(frame.translate);
+}).on("resize", ({ target, width, height, drag, transform }) => {
+  target.style.width = `${width}px`;
+  target.style.height = `${height}px`;
+
+  //frame.translate = drag.beforeTranslate;
+  //target.style.transform = target.style.transform.split("translate")[0]+`translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`;
 });
 
-move.on("scale", ({ target, transform }) => {
+move.on("scaleStart", ({ set, dragStart }) => {
+  set(frame.scale);
+
+  // If a drag event has already occurred, there is no dragStart.
+  dragStart && dragStart.set(frame.translate);
+}).on("scale", ({ target, scale, drag }) => {
+  frame.scale = scale;
+  // get drag event
+  frame.translate = drag.beforeTranslate;
+  target.style.transform
+      = `translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`
+      + `scale(${scale[0]}, ${scale[1]})`;
+}).on("scaleEnd", ({ target, isDrag, clientX, clientY }) => {
+  console.log("onScaleEnd", target, isDrag);
+});
+
+move.on("rotateStart", ({ set }) => {
+  set(frame.rotate);
+}).on("rotate", ({ target, beforeRotate, transform }) => {
+  frame.rotate = beforeRotate;
   target.style.transform = transform;
 });
 
-move.on("rotate", ({ target, transform }) => {
-  target.style.transform = transform;
-  //console.log(transform);
+move.on("renderEnd", ({ target }) => {  
+  $(target).css("transform", $(target).css("transform"));
 });
-
-move.on("warp", ({ target, transform, }) => {
-  target.style.transform = transform;
-});
-
 
 $("#collage-area").on("click", function () {
   move.target = null;
   $(".target.selected").removeClass("selected");
-});
-
-$("body > div.d-flex").on("click", "button", function () {
-  move.target = null;
-  $(".target.selected").removeClass("selected");
+  $("#collage-tools .moveable-buttons").addClass("d-none");
 });
 
 $("#collage-area").on("click", ".target", function (e) {
@@ -68,13 +116,20 @@ $("#collage-area").on("click", ".target", function (e) {
     move.target = target;
     $(".target.selected").removeClass("selected");
     $(target).addClass("selected");
+    $("#collage-tools .moveable-buttons").removeClass("d-none");
   }
   else {
     //move.resizable = !move.resizable;
   }
 });
 
-$("#collage-tools button[name='collage-add']").on("click", function () {
+$("#collage-tools .source-controls").on("click", "button", function () {
+  move.target = null;
+  $(".target.selected").removeClass("selected");
+  $("#collage-tools .moveable-buttons").addClass("d-none");
+});
+
+$("#collage-tools .source-controls button[name='collage-add']").on("click", function () {
   $("#collage-source").toggleClass("show");
 });
 
@@ -144,7 +199,7 @@ $("#download-form").on("submit", function (e) {
   $(window).resize();
 });
 
-$("#collage-tools button[name='collage-clear']").on("click", function () {
+$("#collage-tools .source-controls button[name='collage-clear']").on("click", function () {
   $("#collage-area").html("");
   layer_array = [];
 });
@@ -204,6 +259,7 @@ $(document).on("click", ".moveable-buttons button[name='collage-remove']", funct
   $(move.target).remove();
   move.target = null;
   $(".target.selected").removeClass("selected");
+  $("#collage-tools .moveable-buttons").addClass("d-none");
 });
 
 $(document).on("click", ".moveable-buttons button[name='collage-up']", function () {
@@ -235,21 +291,23 @@ $(document).on("click", ".moveable-buttons button[name='collage-down']", functio
 $(document).on("click", ".moveable-buttons button[name='collage-flip']", function () {
   let targetDom = $(move.target);
   let target_id = targetDom.attr("id");
-  let now_trans = targetDom.css("transform");
+  let now_trans = targetDom.css("transform")=="none"?"":targetDom.css("transform");
   targetDom.css("transform", now_trans + " scaleX(-1)");
-  targetDom.trigger('move');
+  move.target = null;
+  move.target = targetDom.get(0);
 });
 
 $(document).ready(function () {
+  /*
   let controlButtonsDom = $(`  
-    <div class="moveable-buttons">  
+    <div class="moveable-buttons">
       <button class="btn btn-danger mt-1 target-control" type="button" title="delete" name="collage-remove"><i class="far fa-trash-alt"></i></button>
       <button class="btn btn-secondary mt-1 target-control" type="button" title="up" name="collage-up"><i class="fas fa-arrow-up"></i></button>
       <button class="btn btn-secondary mt-1 target-control" type="button" title="down" name="collage-down"><i class="fas fa-arrow-down"></i></button>
       <button class="btn btn-secondary mt-1 target-control" type="button" title="flip" name="collage-flip"><i class="fas fa-arrows-alt-h"></i></button>
     </div>
   `);
-  $(".moveable-control-box").append(controlButtonsDom);
+  $(".moveable-control-box").append(controlButtonsDom);*/
   $(window).resize();
 
   let last_data = localStorage.getItem('export_data');
