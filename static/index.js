@@ -34,8 +34,8 @@ function loadData(data) {
   let now_w = $("#collage-area").width();
   let bg_color = data['data']['background-color'];
   let bg_img = data['data']['background-image'];
-  $("#collage-area").css({ "background-color": bg_color });
-  $("#collage-area").css({ "background-image": bg_img });
+  $("#collage-background").css({ "background-color": bg_color });
+  $("#image-background").css({ "background-image": bg_img });
   bg_color = bg_color.replace("rgb(", "").replace(")", "");
   bg_color = bg_color.split(",");
   console.log(rgbToHex(...bg_color));
@@ -52,8 +52,8 @@ function saveData() {
     "data": {
       "width": $("#collage-area").width(),
       "height": $("#collage-area").height(),
-      "background-color": $("#collage-area").css("background-color"),
-      "background-image": $("#collage-area").css("background-image"),
+      "background-color": $("#collage-background").css("background-color"),
+      "background-image": $("#image-background").css("background-image"),
       "email": $("#InputEmail").val(),
       "name": $("#InputName").val()
     },
@@ -150,22 +150,32 @@ $("#collage-area").on("click", ".target", function (e) {
 });
 
 $(window).on("keydown", function (e) {
-  if(move.target != null) {
+  if (move.target != null) {
     //console.log(e.keyCode)
-    if(e.keyCode == 46) { //delete
+    if (e.keyCode == 46) { //delete
       $(".moveable-buttons button[name='collage-remove']").trigger("click");
     }
-    else if(e.keyCode == 88) { //x
+    else if (e.keyCode == 88) { //x
       $(".moveable-buttons button[name='collage-flip']").trigger("click");
     }
-    else if(e.keyCode == 33) { //pgup
+    else if (e.keyCode == 33) { //pgup
       $(".moveable-buttons button[name='collage-up']").trigger("click");
     }
-    else if(e.keyCode == 34) { //pgdn
+    else if (e.keyCode == 34) { //pgdn
       $(".moveable-buttons button[name='collage-down']").trigger("click");
+    }
+    else if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
+      move.keepRatio = true;
     }
   }
 });
+
+$(window).on("keyup", function (e) {
+  if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
+    move.keepRatio = false;
+  }
+});
+
 
 $("#collage-tools .source-controls").on("click", "button", function () {
   move.target = null;
@@ -177,6 +187,7 @@ $("#collage-tools .source-controls button[name='collage-add']").on("click", func
   $("#collage-source").toggleClass("show");
 });
 
+/*
 function share_fb(canvas) {
   dataUrl = canvas.toDataURL(),
     imageFoo = document.createElement('img');
@@ -189,16 +200,16 @@ function share_fb(canvas) {
   // After you are done styling it, append it to the BODY element
   document.body.appendChild(imageFoo);
   window.open('http://www.facebook.com/sharer.php?u=' + encodeURIComponent(dataUrl) + '&t=' + encodeURIComponent(`seedingfuture`), 'sharer', 'toolbar=0,status=0,width=626,height=436');
-}
+}*/
 
 $("#download-form").on("submit", function (e) {
   e.preventDefault();
   $("#loading").removeClass("d-none");
 
-  $("#collage-area").css({ "border": "0" });
-  let export_data = saveData();
+  $("#collage-box").css({ "border": "0" });
+  let export_data = saveData();  
 
-  html2canvas(document.body.querySelector("#collage-area")).then(function (canvas) {
+  html2canvas(document.body.querySelector("#collage-box")).then(function (canvas) {
     var img = canvas.toDataURL("image/png");
     var link = document.createElement('a');
     var date = new Date();
@@ -245,43 +256,32 @@ $("#source-box .source-img").on("click", function () {
 });
 
 $("#bgModal .bg-img").on("click", function () {
-  $("#collage-area").css("background-image", `url(${$(this).data("src")})`);
+  $("#image-background").css("background-image", `url(${$(this).data("src")})`);
 });
 
 $('#bgcolor').on('input', function () {
   let bgcolor = $(this).val();
-  $("#collage-area").css({ "background-color": bgcolor });
-});
-
-$(window).keydown(function (e) {
-  if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
-    move.keepRatio = true;
-  }
-});
-$(window).keyup(function (e) {
-  if (e.code == 'ShiftLeft' || e.code == 'ShiftRight') {
-    move.keepRatio = false;
-  }
+  $("#collage-background").css({ "background-color": bgcolor });
 });
 
 $(window).resize(function () {
-  $("#collage-area").css({ "width": "100%", "height": "100%" });
-  let c_w = $("#collage-area").width();
-  let c_h = $("#collage-area").height();
+  $("#collage-box").css({ "width": "100%", "height": "100%" });
+  let c_w = $("#collage-box").width();
+  let c_h = $("#collage-box").height();
   if (c_w >= c_h) {
     if (c_w > c_h * 16 / 9) {
-      $("#collage-area").width(c_h * 16 / 9);
+      $("#collage-box").width(c_h * 16 / 9);
     }
     else {
-      $("#collage-area").height(c_w * 9 / 16);
+      $("#collage-box").height(c_w * 9 / 16);
     }
   }
   else {
     if (c_w > c_h * 9 / 16) {
-      $("#collage-area").width(c_h * 9 / 16);
+      $("#collage-box").width(c_h * 9 / 16);
     }
     else {
-      $("#collage-area").height(c_w * 16 / 9);
+      $("#collage-box").height(c_w * 16 / 9);
     }
   }
 });
@@ -330,16 +330,6 @@ $(document).on("click", ".moveable-buttons button[name='collage-flip']", functio
 });
 
 $(document).ready(function () {
-  /*
-  let controlButtonsDom = $(`  
-    <div class="moveable-buttons">
-      <button class="btn btn-danger mt-1 target-control" type="button" title="delete" name="collage-remove"><i class="far fa-trash-alt"></i></button>
-      <button class="btn btn-secondary mt-1 target-control" type="button" title="up" name="collage-up"><i class="fas fa-arrow-up"></i></button>
-      <button class="btn btn-secondary mt-1 target-control" type="button" title="down" name="collage-down"><i class="fas fa-arrow-down"></i></button>
-      <button class="btn btn-secondary mt-1 target-control" type="button" title="flip" name="collage-flip"><i class="fas fa-arrows-alt-h"></i></button>
-    </div>
-  `);
-  $(".moveable-control-box").append(controlButtonsDom);*/
   $(window).resize();
 
   let last_data = localStorage.getItem('export_data');
