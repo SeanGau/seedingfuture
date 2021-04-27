@@ -85,13 +85,13 @@
                     <button class="btn btn-primary btn-lg" type="button" title="download" data-bs-toggle="modal"
                         data-bs-target="#submitModal"><i class="fas fa-file-download"></i></button>
                     <div class="moveable-buttons d-none">
-                        <button class="btn btn-danger mt-1 target-control" type="button" title="delete"
+                        <button class="btn btn-danger mt-1 target-control" type="button" title="delete (Del)"
                             name="collage-remove"><i class="far fa-trash-alt"></i></button>
-                        <button class="btn btn-secondary mt-1 target-control" type="button" title="layer up"
+                        <button class="btn btn-secondary mt-1 target-control" type="button" title="layer up (PgUp)"
                             name="collage-up"><i class="fas fa-arrow-up"></i></button>
-                        <button class="btn btn-secondary mt-1 target-control" type="button" title="layer down"
+                        <button class="btn btn-secondary mt-1 target-control" type="button" title="layer down (PgDn)"
                             name="collage-down"><i class="fas fa-arrow-down"></i></button>
-                        <button class="btn btn-secondary mt-1 target-control" type="button" title="flip"
+                        <button class="btn btn-secondary mt-1 target-control" type="button" title="flip (x)"
                             name="collage-flip"><i class="fas fa-arrows-alt-h"></i></button>
                     </div>
                     <div class="source-controls">
@@ -126,7 +126,7 @@
     </div>
     
     <div id="loading" class="d-none">        
-        <img src="{{url_for('static', filename='Cube-1s-200px.svg' )}}" alt="">
+        <img src="{{url_for('static', filename='loading.svg' )}}" alt="">
     </div>
     <script src="https://kit.fontawesome.com/cc94f52acd.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"

@@ -30,13 +30,13 @@ function arrayRemove(arr, value) {
 }
 
 function loadData(data) {
-  let orig_w = data['data']['width'];  
+  let orig_w = data['data']['width'];
   let now_w = $("#collage-area").width();
   let bg_color = data['data']['background-color'];
   let bg_img = data['data']['background-image'];
   $("#collage-area").css({ "background-color": bg_color });
   $("#collage-area").css({ "background-image": bg_img });
-  bg_color = bg_color.replace("rgb(","").replace(")","");
+  bg_color = bg_color.replace("rgb(", "").replace(")", "");
   bg_color = bg_color.split(",");
   console.log(rgbToHex(...bg_color));
   $("#bgcolor").val(rgbToHex(...bg_color));
@@ -47,6 +47,29 @@ function loadData(data) {
   });
 }
 
+function saveData() {
+  let export_data = {
+    "data": {
+      "width": $("#collage-area").width(),
+      "height": $("#collage-area").height(),
+      "background-color": $("#collage-area").css("background-color"),
+      "background-image": $("#collage-area").css("background-image"),
+      "email": $("#InputEmail").val(),
+      "name": $("#InputName").val()
+    },
+    "collage": {}
+  };
+  layer_array.forEach(element => {
+    let targetDom = $(`#collage-area #${element}`);
+    targetDom.css("transform", targetDom.css("transform"));
+    export_data["collage"][element] = {
+      "outerHTML": $(`#collage-area #${element}`).prop("outerHTML")
+    };
+  });
+  localStorage.setItem('export_data', JSON.stringify(export_data));
+  console.log("saved");
+  return export_data;
+}
 
 const frame = {
   rotate: 0,
@@ -88,8 +111,8 @@ move.on("scaleStart", ({ set, dragStart }) => {
   // get drag event
   frame.translate = drag.beforeTranslate;
   target.style.transform
-      = `translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`
-      + `scale(${scale[0]}, ${scale[1]})`;
+    = `translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`
+    + `scale(${scale[0]}, ${scale[1]})`;
 }).on("scaleEnd", ({ target, isDrag, clientX, clientY }) => {
   console.log("onScaleEnd", target, isDrag);
 });
@@ -101,7 +124,7 @@ move.on("rotateStart", ({ set }) => {
   target.style.transform = transform;
 });
 
-move.on("renderEnd", ({ target }) => {  
+move.on("renderEnd", ({ target }) => {
   $(target).css("transform", $(target).css("transform"));
 });
 
@@ -123,6 +146,24 @@ $("#collage-area").on("click", ".target", function (e) {
   }
   else {
     //move.resizable = !move.resizable;
+  }
+});
+
+$(window).on("keydown", function (e) {
+  if(move.target != null) {
+    //console.log(e.keyCode)
+    if(e.keyCode == 46) { //delete
+      $(".moveable-buttons button[name='collage-remove']").trigger("click");
+    }
+    else if(e.keyCode == 88) { //x
+      $(".moveable-buttons button[name='collage-flip']").trigger("click");
+    }
+    else if(e.keyCode == 33) { //pgup
+      $(".moveable-buttons button[name='collage-up']").trigger("click");
+    }
+    else if(e.keyCode == 34) { //pgdn
+      $(".moveable-buttons button[name='collage-down']").trigger("click");
+    }
   }
 });
 
@@ -152,19 +193,10 @@ function share_fb(canvas) {
 
 $("#download-form").on("submit", function (e) {
   e.preventDefault();
+  $("#loading").removeClass("d-none");
 
   $("#collage-area").css({ "border": "0" });
-  let export_data = {
-    "data": {
-      "width": $("#collage-area").width(),
-      "height": $("#collage-area").height(),
-      "background-color": $("#collage-area").css("background-color"),
-      "background-image": $("#collage-area").css("background-image"),
-      "email": $("#InputEmail", this).val(),
-      "name": $("#InputName", this).val()
-    },
-    "collage": {}
-  };
+  let export_data = saveData();
 
   html2canvas(document.body.querySelector("#collage-area")).then(function (canvas) {
     var img = canvas.toDataURL("image/png");
@@ -172,22 +204,10 @@ $("#download-form").on("submit", function (e) {
     var date = new Date();
     var time = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
 
-    layer_array.forEach(element => {
-      let targetDom = $(`#collage-area #${element}`);
-      targetDom.css("transform", targetDom.css("transform"));
-
-      export_data["collage"][element] = {
-        "outerHTML": $(`#collage-area #${element}`).prop("outerHTML")
-      };
-    });
-
     link.download = `seedingfuture_${time}.png`;
     link.href = img;
     link.click();
-
-    localStorage.setItem('export_data', JSON.stringify(export_data));
-
-    console.log(export_data);
+    $("#loading").addClass("d-none");
     $.ajax({
       type: "POST",
       url: "/function/submit",
@@ -204,8 +224,12 @@ $("#download-form").on("submit", function (e) {
 });
 
 $("#collage-tools .source-controls button[name='collage-clear']").on("click", function () {
-  $("#collage-area").html("");
-  layer_array = [];
+  let r = confirm("確認要清除畫布？");
+  if (r == true) {
+    $("#collage-area").html("");
+    layer_array = [];
+  } else {
+  }
 });
 
 $("#source-box .source-img").on("click", function () {
@@ -299,7 +323,7 @@ $(document).on("click", ".moveable-buttons button[name='collage-down']", functio
 $(document).on("click", ".moveable-buttons button[name='collage-flip']", function () {
   let targetDom = $(move.target);
   let target_id = targetDom.attr("id");
-  let now_trans = targetDom.css("transform")=="none"?"":targetDom.css("transform");
+  let now_trans = targetDom.css("transform") == "none" ? "" : targetDom.css("transform");
   targetDom.css("transform", now_trans + " scaleX(-1)");
   move.target = null;
   move.target = targetDom.get(0);
@@ -319,7 +343,8 @@ $(document).ready(function () {
   $(window).resize();
 
   let last_data = localStorage.getItem('export_data');
-  if(last_data != undefined) {    
+  if (last_data != undefined) {
     loadData(JSON.parse(last_data));
   }
+  setInterval(saveData, 1000);
 });
