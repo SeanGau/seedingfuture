@@ -204,7 +204,7 @@ $("#collage-tools .source-controls button[name='collage-clear']").on("click", fu
   layer_array = [];
 });
 
-$("#collage-source .source-img").on("click", function () {
+$("#source-box .source-img").on("click", function () {
   let ms = Date.now();
   let templateDom = $(`
   <div class="target" id="target-${ms}">
@@ -214,6 +214,10 @@ $("#collage-source .source-img").on("click", function () {
   $("img", templateDom).attr("src", $(this).data("src"));
   $("#collage-area").append(templateDom);
   layer_array.push("target-" + ms);
+});
+
+$("#bgModal .bg-img").on("click", function () {
+  $("#collage-area").css("background-image", `url(${$(this).data("src")})`);
 });
 
 $('#bgcolor').on('input', function () {

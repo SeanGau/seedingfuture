@@ -30,7 +30,14 @@ body {
     left: 0;
 }
 
-#collage-source .source-img {
+#source-box {
+    height: 100%;
+    width: 100%;
+    overflow-y: auto;
+    overflow-x: hidden;
+}
+
+#source-box .source-img {
     background-color: white;
     background-position: center center;
     background-size: contain;
@@ -39,15 +46,21 @@ body {
     filter: opacity(0.8);
     transition: .3s;
 }
-#collage-source .source-img:hover {
+#source-box .source-img:hover {
     filter: opacity(1);
 }
 
 #collage-tools {
     position: absolute;
-    width: 20em;
+    width: 12em;
     bottom: 0.5em;
     left: 31vw;
+}
+
+button[title="download"] {
+    position: fixed;
+    right: 1em;
+    bottom: 1em;
 }
 
 #bgcolor {
@@ -61,7 +74,7 @@ body {
     display: flex;
     background-color: #DDD;
     background-size: cover;
-    background-image: url("paper1.jpg");
+    background-image: url("source/bg/paper1.jpg");
     background-blend-mode: multiply;
     align-items: center;
     justify-content: center;
@@ -89,4 +102,24 @@ body {
 .target-control {
     width: 2.5em;
     height: 2.5em;
+}
+
+#bgModal .bg-img {    
+    background-color: white;
+    background-position: center center;
+    background-size: cover;
+    background-repeat: no-repeat;    
+    padding-top: 100%;
+    filter: opacity(0.8);
+    transition: .3s;
+}
+
+@media (max-width: 767px)  {
+    #collage-source {
+        width: 50vw;
+        left: -50vw;
+    }    
+    #collage-tools {
+        left: 51vw;
+    }
 }
