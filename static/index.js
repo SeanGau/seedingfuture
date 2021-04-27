@@ -32,8 +32,10 @@ function arrayRemove(arr, value) {
 function loadData(data) {
   let orig_w = data['data']['width'];  
   let now_w = $("#collage-area").width();
-  let bg_color = data['data']['background'];
+  let bg_color = data['data']['background-color'];
+  let bg_img = data['data']['background-image'];
   $("#collage-area").css({ "background-color": bg_color });
+  $("#collage-area").css({ "background-image": bg_img });
   bg_color = bg_color.replace("rgb(","").replace(")","");
   bg_color = bg_color.split(",");
   console.log(rgbToHex(...bg_color));
@@ -54,8 +56,8 @@ const frame = {
 
 move.on("drag", e => {
   //console.log(e);
-  //$(e.target).css({ left: `${e.left}px`, top: `${e.top}px` });
-  e.target.style.transform = e.transform;
+  $(e.target).css({ left: `${e.left}px`, top: `${e.top}px` });
+  //e.target.style.transform = e.transform;
 });
 
 move.on("resizeStart", ({ target, set, setOrigin, dragStart }) => {
@@ -68,12 +70,12 @@ move.on("resizeStart", ({ target, set, setOrigin, dragStart }) => {
   set([cssWidth, cssHeight]);
 
   dragStart && dragStart.set(frame.translate);
-}).on("resize", ({ target, width, height, drag, transform }) => {
+}).on("resize", ({ target, width, height, drag }) => {
   target.style.width = `${width}px`;
   target.style.height = `${height}px`;
 
-  //frame.translate = drag.beforeTranslate;
-  //target.style.transform = target.style.transform.split("translate")[0]+`translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`;
+  frame.translate = drag.beforeTranslate;
+  target.style.transform = drag.transform;
 });
 
 move.on("scaleStart", ({ set, dragStart }) => {
@@ -111,6 +113,7 @@ $("#collage-area").on("click", function () {
 
 $("#collage-area").on("click", ".target", function (e) {
   e.stopPropagation();
+  $("#collage-source").removeClass("show");
   let target = this;
   if (move.target !== target) {
     move.target = target;
@@ -155,7 +158,8 @@ $("#download-form").on("submit", function (e) {
     "data": {
       "width": $("#collage-area").width(),
       "height": $("#collage-area").height(),
-      "background": $("#collage-area").css("background-color"),
+      "background-color": $("#collage-area").css("background-color"),
+      "background-image": $("#collage-area").css("background-image"),
       "email": $("#InputEmail", this).val(),
       "name": $("#InputName", this).val()
     },

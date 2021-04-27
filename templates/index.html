@@ -100,7 +100,7 @@
                         <button class="btn btn-danger mr-1" type="button" title="clear" name="collage-clear"><i
                                 class="fas fa-snowplow"></i></button>
                         <button class="btn btn-secondary mr-1" type="button" title="background" data-bs-toggle="modal"
-                            data-bs-target="#bgModal"><i class="fas fa-image"></i></button>                        
+                            data-bs-target="#bgModal"><i class="fas fa-scroll"></i></button>                        
                     </div>
                 </div>
                 <div id="source-box" class="container p-3">
@@ -124,7 +124,10 @@
             </div>
         </div>
     </div>
-
+    
+    <div id="loading" class="d-none">        
+        <img src="{{url_for('static', filename='Cube-1s-200px.svg' )}}" alt="">
+    </div>
     <script src="https://kit.fontawesome.com/cc94f52acd.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
         integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
