@@ -207,13 +207,13 @@ $("#download-form").on("submit", function (e) {
   $("#loading").removeClass("d-none");
 
   $("#collage-box").css({ "border": "0" });
-  $("#image-background").css({"opacity": 0.35});
+  $("#image-background").css({"opacity": 0.2});
   let export_data = saveData();  
   html2canvas(document.body.querySelector("#collage-box")).then(function (canvas) {
     var img = canvas.toDataURL("image/png");
     var link = document.createElement('a');
     var date = new Date();
-    var time = `${date.getFullYear()}-${date.getMonth()}-${date.getDay()}`;
+    var time = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDay()+1}`;
 
     link.download = `seedingfuture_${time}.png`;
     link.href = img;
@@ -229,7 +229,7 @@ $("#download-form").on("submit", function (e) {
       contentType: "application/json"
     });
   });
-  $("#image-background").css({"opacity": 0.5});
+  $("#image-background").css("opacity", "");
   $("#collage-box").css({ "border": "" });
   $(window).resize();
 });
