@@ -207,8 +207,8 @@ $("#download-form").on("submit", function (e) {
   $("#loading").removeClass("d-none");
 
   $("#collage-box").css({ "border": "0" });
+  $("#image-background").css({"opacity": 0.35});
   let export_data = saveData();  
-
   html2canvas(document.body.querySelector("#collage-box")).then(function (canvas) {
     var img = canvas.toDataURL("image/png");
     var link = document.createElement('a');
@@ -229,8 +229,8 @@ $("#download-form").on("submit", function (e) {
       contentType: "application/json"
     });
   });
-
-  $("#collage-area").css({ "border": "" });
+  $("#image-background").css({"opacity": 0.5});
+  $("#collage-box").css({ "border": "" });
   $(window).resize();
 });
 
