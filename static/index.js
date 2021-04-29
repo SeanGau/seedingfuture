@@ -187,21 +187,6 @@ $("#collage-tools .source-controls button[name='collage-add']").on("click", func
   $("#collage-source").toggleClass("show");
 });
 
-/*
-function share_fb(canvas) {
-  dataUrl = canvas.toDataURL(),
-    imageFoo = document.createElement('img');
-  imageFoo.src = dataUrl;
-
-  // Style your image here
-  imageFoo.style.width = '100px';
-  imageFoo.style.height = '100px';
-
-  // After you are done styling it, append it to the BODY element
-  document.body.appendChild(imageFoo);
-  window.open('http://www.facebook.com/sharer.php?u=' + encodeURIComponent(dataUrl) + '&t=' + encodeURIComponent(`seedingfuture`), 'sharer', 'toolbar=0,status=0,width=626,height=436');
-}*/
-
 $("#download-form").on("submit", function (e) {
   e.preventDefault();
   $("#loading").removeClass("d-none");
@@ -330,6 +315,7 @@ $(document).on("click", ".moveable-buttons button[name='collage-flip']", functio
 });
 
 $(document).ready(function () {
+  $("#aboutModal").modal('show');
   $(window).resize();
 
   let last_data = localStorage.getItem('export_data');

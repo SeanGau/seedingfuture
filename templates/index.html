@@ -4,6 +4,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <link rel="icon" type="image/ico" href={{url_for('static', filename='favicon.ico' )}}>
     <link rel="stylesheet" href={{url_for('static', filename='reset.css' )}}>
     <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
         integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
@@ -27,6 +28,27 @@
 </head>
 
 <body>
+    <div class="modal fade" id="aboutModal" tabindex="-1" role="dialog">
+        <div class="vertical-alignment-helper">
+            <div class="modal-dialog vertical-align-center" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">關於</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <p>關於此計畫： <a href="https://seedingfuture.travel.blog/"
+                                target="_blank">https://seedingfuture.travel.blog/</a></p>
+                        <p>
+                            此程式開源在<a href="https://github.com/SeanGau/seedingfuture" target="_blank">github</a><br>
+                            程式授權：GNU GPL V3<br>
+                            文字、圖像內容授權：CC-BY 4.0
+                        </p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
     <div class="modal fade" id="submitModal" tabindex="-1" role="dialog">
         <div class="modal-dialog" role="document">
             <div class="modal-content">
@@ -78,6 +100,8 @@
     <div class="d-flex flex-column h-100">
         <div id="header">
             {{GLOBAL_TITLE}}
+            <a role="button" class="btn btn-outline-light mx-4" title="about" data-bs-toggle="modal"
+                data-bs-target="#aboutModal">關於</a>
         </div>
         <div class="flex-grow-1 d-flex">
             <div id="collage-source">
@@ -100,7 +124,7 @@
                         <button class="btn btn-danger mr-1" type="button" title="clear" name="collage-clear"><i
                                 class="fas fa-snowplow"></i></button>
                         <button class="btn btn-secondary mr-1" type="button" title="background" data-bs-toggle="modal"
-                            data-bs-target="#bgModal"><i class="fas fa-scroll"></i></button>                        
+                            data-bs-target="#bgModal"><i class="fas fa-scroll"></i></button>
                     </div>
                 </div>
                 <div id="source-box" class="container p-3">
@@ -127,8 +151,8 @@
             </div>
         </div>
     </div>
-    
-    <div id="loading" class="d-none">        
+
+    <div id="loading" class="d-none">
         <img src="{{url_for('static', filename='loading.svg' )}}" alt="">
     </div>
     <script src="https://kit.fontawesome.com/cc94f52acd.js" crossorigin="anonymous"></script>
