@@ -50,48 +50,53 @@
         </div>
     </div>
     <div class="modal fade" id="submitModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">下載圖片</h5>
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body">
-                    <form id="download-form">
-                        <div class="mb-3">
-                            <label for="InputEmail" class="form-label">Email</label>
-                            <input type="email" class="form-control" id="InputEmail" required>
-                        </div>
-                        <div class="mb-3">
-                            <label for="InputName" class="form-label">姓名</label>
-                            <input type="text" class="form-control" id="InputName" required>
-                        </div>
-                        <button type="submit" class="btn btn-primary">開始下載</button>
-                    </form>
+        <div class="vertical-alignment-helper">
+            <div class="modal-dialog vertical-align-center" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">下載圖片</h5>
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body">
+                        <form id="download-form">
+                            <div class="mb-3">
+                                <label for="InputEmail" class="form-label">Email</label>
+                                <input type="email" class="form-control" id="InputEmail" required>
+                            </div>
+                            <div class="mb-3">
+                                <label for="InputName" class="form-label">姓名</label>
+                                <input type="text" class="form-control" id="InputName" required>
+                            </div>
+                            <button type="submit" class="btn btn-primary">開始下載</button>
+                        </form>
+                    </div>
                 </div>
             </div>
         </div>
     </div>
     <div class="modal fade" id="bgModal" tabindex="-1" role="dialog">
-        <div class="modal-dialog" role="document">
-            <div class="modal-content">
-                <div class="modal-header">
-                    <h5 class="modal-title">背景樣式</h5>
-                    <input type="color" id="bgcolor" title="background color" name="bgcolor" value="#DDDDDD" />
-                    <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
-                </div>
-                <div class="modal-body container" style="max-height: 50vh; overflow-y: auto; overflow-x: hidden;">
-                    <div class="row g-2">
-                        {% for bg in bgs %}
-                        {% set bg_url = url_for('static', filename='source/bg/'+bg['filename'])%}
-                        {% set thumb_url = url_for('static', filename='source/bg/thumb/'+bg['filename'])%}
-                        <div class="col-6">
-                            <a href="#">
-                                <div class="bg-img" style="background-image: url({{thumb_url}});" data-src={{bg_url}}>
-                                </div>
-                            </a>
+        <div class="vertical-alignment-helper">
+            <div class="modal-dialog vertical-align-center" role="document">
+                <div class="modal-content">
+                    <div class="modal-header">
+                        <h5 class="modal-title">背景樣式</h5>
+                        <input type="color" id="bgcolor" title="background color" name="bgcolor" value="#DDDDDD" />
+                        <button type="button" class="btn-close" data-bs-dismiss="modal" aria-label="Close"></button>
+                    </div>
+                    <div class="modal-body container" style="max-height: 50vh; overflow-y: auto; overflow-x: hidden;">
+                        <div class="row g-2">
+                            {% for bg in bgs %}
+                            {% set bg_url = url_for('static', filename='source/bg/'+bg['filename'])%}
+                            {% set thumb_url = url_for('static', filename='source/bg/thumb/'+bg['filename'])%}
+                            <div class="col-6">
+                                <a href="#">
+                                    <div class="bg-img" style="background-image: url({{thumb_url}});"
+                                        data-src={{bg_url}}>
+                                    </div>
+                                </a>
+                            </div>
+                            {% endfor %}
                         </div>
-                        {% endfor %}
                     </div>
                 </div>
             </div>
