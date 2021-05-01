@@ -2,6 +2,7 @@ const move = new Moveable(document.body, {
   draggable: true,
   resizable: true,
   rotatable: true,
+  pinchable: true,
   keepRatio: false,
   origin: false,
   edge: true,
