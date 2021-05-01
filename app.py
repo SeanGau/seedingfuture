@@ -4,7 +4,7 @@ from PIL import Image
 from flask_sqlalchemy import SQLAlchemy
 
 app = flask.Flask(__name__)
-app.jinja_env.globals['GLOBAL_TITLE'] = "Seeding Future Collage"
+app.jinja_env.globals['GLOBAL_TITLE'] = "未來種子｜Seeding Future"
 app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL'].replace("postgres://","postgresql://")
 app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'encoding': 'utf-8', 'json_serializer': lambda obj: obj, 'echo': False}
 app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
