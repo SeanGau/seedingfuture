@@ -101,27 +101,18 @@ move.on("resizeStart", ({ target, set, setOrigin, dragStart }) => {
   target.style.transform = drag.transform;
 });
 
-move.on("scaleStart", ({ set, dragStart }) => {
-  set(frame.scale);
-
-  // If a drag event has already occurred, there is no dragStart.
-  dragStart && dragStart.set(frame.translate);
-}).on("scale", ({ target, scale, drag }) => {
-  frame.scale = scale;
-  // get drag event
-  frame.translate = drag.beforeTranslate;
-  target.style.transform
-    = `translate(${drag.beforeTranslate[0]}px, ${drag.beforeTranslate[1]}px)`
-    + `scale(${scale[0]}, ${scale[1]})`;
+move.on("scaleStart", ({ target, clientX, clientY }) => {
+}).on("scale", ({ target, drag }) => {
+  //console.log(e);
+  target.style.transform = drag.transform;
 }).on("scaleEnd", ({ target, isDrag, clientX, clientY }) => {
-  console.log("onScaleEnd", target, isDrag);
 });
 
 move.on("rotateStart", ({ set }) => {
   set(frame.rotate);
-}).on("rotate", ({ target, beforeRotate, transform }) => {
+}).on("rotate", ({ target, beforeRotate, drag }) => {
   frame.rotate = beforeRotate;
-  target.style.transform = transform;
+  target.style.transform = drag.transform;
 });
 
 move.on("renderEnd", ({ target }) => {
@@ -192,27 +183,32 @@ $("#download-form").on("submit", function (e) {
   $("#loading").removeClass("d-none");
 
   $("#collage-box").css({ "border": "0" });
-  $("#image-background").css({"opacity": 0.2});
-  let export_data = saveData();  
+  $("#image-background").css({ "opacity": 0.2 });
+  let export_data = saveData();
   html2canvas(document.body.querySelector("#collage-box")).then(function (canvas) {
     var img = canvas.toDataURL("image/png");
     var link = document.createElement('a');
     var date = new Date();
-    var time = `${date.getFullYear()}-${date.getMonth()+1}-${date.getDay()+1}`;
+    var time = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay() + 1}`;
 
     link.download = `seedingfuture_${time}.png`;
     link.href = img;
     link.click();
     $("#loading").addClass("d-none");
-    $.ajax({
-      type: "POST",
-      url: "/function/submit",
-      data: JSON.stringify(export_data),
-      success: function (cb) {
-        console.log(cb);
-      },
-      contentType: "application/json"
-    });
+    if (export_data['data']['email'].length>0 && export_data['data']['name'].length>0) {
+      $.ajax({
+        type: "POST",
+        url: "/function/submit",
+        data: JSON.stringify(export_data),
+        success: function (cb) {
+          console.log(cb);
+        },
+        contentType: "application/json"
+      });
+    }
+    else {
+      console.log("do not post");
+    }
   });
   $("#image-background").css("opacity", "");
   $("#collage-box").css({ "border": "" });
