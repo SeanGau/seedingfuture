@@ -10,7 +10,7 @@
 * 程式於執行時會自動產生thumb縮圖
 
 # how to run
-1. 建立python3 vertual enviroment
+1. 建立python3 virtual enviroment
 2. 設置好DATABASE_URL環境變數
 3.
 ```bash
