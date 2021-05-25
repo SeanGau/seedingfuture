@@ -176,7 +176,6 @@ $("#download-form").on("submit", function(e) {
     e.preventDefault();
     $("#loading").removeClass("d-none");
 
-    $("#collage-box").css({ "border": "0" });
     $("#image-background").css({ "opacity": 0.2 });
     let export_data = saveData();
     html2canvas(document.body.querySelector("#collage-box")).then(function(canvas) {
@@ -204,7 +203,6 @@ $("#download-form").on("submit", function(e) {
         }
     });
     $("#image-background").css("opacity", "");
-    $("#collage-box").css({ "border": "" });
     $(window).resize();
 });
 
