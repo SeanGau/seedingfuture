@@ -11,7 +11,7 @@
 
 # how to run
 1. 建立python3 virtual enviroment
-2. 設置好DATABASE_URL環境變數
+2. 設置好DATABASE_URL環境變數和config.py
 3.
 ```bash
 pip3 install -r requirement.txt
