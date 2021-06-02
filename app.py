@@ -10,42 +10,40 @@ app.jinja_env.globals['GLOBAL_TITLE'] = "未來種子｜Seeding Future"
 app.jinja_env.globals['GLOBAL_VERSION'] = datetime.now().timestamp()
 db = SQLAlchemy(app)
 
-source_img = []
-bg_img = []
-
-for (dirpath, dirnames, filenames) in os.walk("./static/source/bg"):
-    for filename in filenames:
-        #read the image
-        if not os.path.exists("./static/source/bg/thumb/"+filename):            
-            im = Image.open("./static/source/bg/"+filename)
-            im.thumbnail((2000,2000))
-            nim = im.crop((0,0,200,200))
-            nim.save("./static/source/bg/thumb/"+filename)
-
-        _dict = {
-            "filename": filename,
-            "hashed": hashlib.sha1(filename.encode()).hexdigest() 
-        }
-        bg_img.append(_dict)
-    break
-
-for (dirpath, dirnames, filenames) in os.walk("./static/source"):
-    for filename in filenames:
-        #read the image
-        if not os.path.exists("./static/source/thumb/"+filename):
-            im = Image.open("./static/source/"+filename)
-            im.thumbnail((200,200))
-            im.save("./static/source/thumb/"+filename)
-
-        _dict = {
-            "filename": filename,
-            "hashed": hashlib.sha1(filename.encode()).hexdigest() 
-        }
-        source_img.append(_dict)
-    break
-
 @app.route('/')
-def index():
+def index():    
+    source_img = []
+    bg_img = []
+    for (dirpath, dirnames, filenames) in os.walk("./static/source/bg"):
+        for filename in filenames:
+            #read the image
+            if not os.path.exists("./static/source/bg/thumb/"+filename):            
+                im = Image.open("./static/source/bg/"+filename)
+                im.thumbnail((2000,2000))
+                nim = im.crop((0,0,200,200))
+                nim.save("./static/source/bg/thumb/"+filename)
+
+            _dict = {
+                "filename": filename,
+                "hashed": hashlib.sha1(filename.encode()).hexdigest() 
+            }
+            bg_img.append(_dict)
+        break
+    for (dirpath, dirnames, filenames) in os.walk("./static/source"):
+        for filename in filenames:
+            #read the image
+            if not os.path.exists("./static/source/thumb/"+filename):
+                im = Image.open("./static/source/"+filename)
+                im.thumbnail((200,200))
+                im.save("./static/source/thumb/"+filename)
+
+            _dict = {
+                "filename": filename,
+                "hashed": hashlib.sha1(filename.encode()).hexdigest() 
+            }
+            source_img.append(_dict)
+        break
+    
     return flask.render_template('index.html', sources = source_img, bgs = bg_img)
 
 @app.route('/function/submit', methods = ['POST'])
