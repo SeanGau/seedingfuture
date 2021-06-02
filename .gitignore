@@ -1,5 +1,6 @@
 ENV/
 config.py
+*/thumb/*
 
 .DS_Store
 .env

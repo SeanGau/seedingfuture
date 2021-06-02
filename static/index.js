@@ -56,7 +56,8 @@ function saveData() {
             "background-color": $("#collage-background").css("background-color"),
             "background-image": $("#image-background").css("background-image"),
             "email": $("#InputEmail").val(),
-            "name": $("#InputName").val()
+            "name": $("#InputName").val(),
+            "title": $("#InputTitle").val()
         },
         "collage": {}
     };
