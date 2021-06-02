@@ -19,8 +19,12 @@ try:
     shutil.rmtree("./static/source/thumb")
 except:
     print("dir_error")
-os.mkdir("./static/source/bg/thumb")
-os.mkdir("./static/source/thumb")
+    
+try:
+    os.mkdir("./static/source/bg/thumb")
+    os.mkdir("./static/source/thumb")
+except:
+    print("dir_error")
 
 for (dirpath, dirnames, filenames) in os.walk("./static/source/bg"):
     for filename in filenames:
