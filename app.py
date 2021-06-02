@@ -5,34 +5,22 @@ from PIL import Image
 from flask_sqlalchemy import SQLAlchemy
 
 app = flask.Flask(__name__)
+app.config.from_object('config')
 app.jinja_env.globals['GLOBAL_TITLE'] = "未來種子｜Seeding Future"
 app.jinja_env.globals['GLOBAL_VERSION'] = datetime.now().timestamp()
-app.config['SQLALCHEMY_DATABASE_URI'] = os.environ['DATABASE_URL'].replace("postgres://","postgresql://")
-app.config['SQLALCHEMY_ENGINE_OPTIONS'] = {'encoding': 'utf-8', 'json_serializer': lambda obj: obj, 'echo': False}
-app.config['SQLALCHEMY_TRACK_MODIFICATIONS'] = False
 db = SQLAlchemy(app)
 
 source_img = []
 bg_img = []
-try:
-    shutil.rmtree("./static/source/bg/thumb")
-    shutil.rmtree("./static/source/thumb")
-except:
-    print("dir_error")
-    
-try:
-    os.mkdir("./static/source/bg/thumb")
-    os.mkdir("./static/source/thumb")
-except:
-    print("dir_error")
 
 for (dirpath, dirnames, filenames) in os.walk("./static/source/bg"):
     for filename in filenames:
         #read the image
-        im = Image.open("./static/source/bg/"+filename)
-        im.thumbnail((2000,2000))
-        nim = im.crop((0,0,200,200))
-        nim.save("./static/source/bg/thumb/"+filename)
+        if not os.path.exists("./static/source/bg/thumb/"+filename):            
+            im = Image.open("./static/source/bg/"+filename)
+            im.thumbnail((2000,2000))
+            nim = im.crop((0,0,200,200))
+            nim.save("./static/source/bg/thumb/"+filename)
 
         _dict = {
             "filename": filename,
@@ -44,9 +32,10 @@ for (dirpath, dirnames, filenames) in os.walk("./static/source/bg"):
 for (dirpath, dirnames, filenames) in os.walk("./static/source"):
     for filename in filenames:
         #read the image
-        im = Image.open("./static/source/"+filename)
-        im.thumbnail((200,200))
-        im.save("./static/source/thumb/"+filename)
+        if not os.path.exists("./static/source/thumb/"+filename):
+            im = Image.open("./static/source/"+filename)
+            im.thumbnail((200,200))
+            im.save("./static/source/thumb/"+filename)
 
         _dict = {
             "filename": filename,
@@ -67,7 +56,7 @@ def submit():
             return "Empty data"
 
         _data = json.dumps(_data_dict, ensure_ascii=False).replace('\'','\"').replace('%','%%')
-        _sql = f"INSERT INTO collages.\"collage-datas\"(data) VALUES (\'{_data}\');"
+        _sql = f"INSERT INTO public.collage_datas (data) VALUES (\'{_data}\');"
         db.session.execute(_sql)
         db.session.commit()
         return "done"
