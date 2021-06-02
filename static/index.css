@@ -1,7 +1,10 @@
+html {
+    height: 100%;
+}
 body {
     font-family: 'Noto Sans TC', sans-serif;
-    height: 100vh;
-    width: 100vw;
+    height: 100%;
+    width: 100%;
     overflow: hidden;
     background-color: #333;
 }
@@ -21,8 +24,8 @@ p {
     position: fixed;
     top: 0;
     left: 0;
-    width: 100vw;
-    height: 100vh;
+    width: 100%;
+    height: 100%;
     background-color: rgba(0, 0, 0, 0.5);
 }
 
@@ -47,7 +50,7 @@ p {
 
 #collage-source {
     z-index: 999;
-    height: calc(100vh - 3em);
+    height: calc(100% - 4em);
     width: 30vw;
     position: fixed;
     left: -30vw;
