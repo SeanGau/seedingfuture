@@ -10,6 +10,14 @@ app.jinja_env.globals['GLOBAL_TITLE'] = "未來種子｜Seeding Future"
 app.jinja_env.globals['GLOBAL_VERSION'] = datetime.now().timestamp()
 db = SQLAlchemy(app)
 
+@app.route('/loadfile', methods = ['GET', 'POST'])
+def loadfile():
+    if flask.request.method == 'POST':
+        _data = flask.request.form
+        print(_data)
+    else:
+        return flask.render_template('loadfile.html')
+
 @app.route('/')
 def index():    
     source_img = []
@@ -53,7 +61,7 @@ def submit():
         if len(_data_dict['collage']) < 1:
             return "Empty data"
 
-        _data = json.dumps(_data_dict, ensure_ascii=False).replace('\'','\"').replace('%','%%')
+        _data = json.dumps(_data_dict, ensure_ascii=False)
         _sql = f"INSERT INTO public.collage_datas (data) VALUES (\'{_data}\');"
         db.session.execute(_sql)
         db.session.commit()
