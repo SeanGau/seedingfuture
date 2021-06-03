@@ -177,7 +177,7 @@ $("#download-form").on("submit", function(e) {
     e.preventDefault();
     $("#loading").removeClass("d-none");
 
-    $("#image-background").css({ "opacity": 0.2 });
+    $("#image-background").css({ "opacity": 0.4 });
     let export_data = saveData();
     html2canvas(document.body.querySelector("#collage-box")).then(function(canvas) {
         var img = canvas.toDataURL("image/png");
