@@ -263,6 +263,14 @@ $(document).on("click", ".moveable-buttons button[name='collage-remove']", funct
     $("#collage-tools .moveable-buttons").addClass("d-none");
 });
 
+$(document).on("click", ".moveable-buttons button[name='collage-to-top']", function() {
+    let targetDom = $(move.target);
+    let target_id = targetDom.attr("id");
+    arrayRemove(layer_array, target_id);
+    layer_array.push(target_id);
+    targetDom.remove();
+    $("#collage-area").append(targetDom);
+});
 $(document).on("click", ".moveable-buttons button[name='collage-up']", function() {
     let targetDom = $(move.target);
     let target_id = targetDom.attr("id");
@@ -287,6 +295,14 @@ $(document).on("click", ".moveable-buttons button[name='collage-down']", functio
         layer_array[cur_z - 1] = target_id;
         layer_array[cur_z] = next_id;
     }
+});
+$(document).on("click", ".moveable-buttons button[name='collage-to-bottom']", function() {
+    let targetDom = $(move.target);
+    let target_id = targetDom.attr("id");
+    arrayRemove(layer_array, target_id);
+    layer_array.unshift(target_id);
+    targetDom.remove();
+    $("#collage-area").prepend(targetDom);
 });
 
 $(document).on("click", ".moveable-buttons button[name='collage-flip']", function() {
