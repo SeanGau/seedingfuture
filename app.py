@@ -39,20 +39,31 @@ def index():
         break
     for (dirpath, dirnames, filenames) in os.walk("./static/source"):
         for filename in filenames:
+            if filename == "category.json":
+                continue
             #read the image
             if not os.path.exists("./static/source/thumb/"+filename):
                 im = Image.open("./static/source/"+filename)
                 im.thumbnail((200,200))
                 im.save("./static/source/thumb/"+filename)
-
-            _dict = {
-                "filename": filename,
-                "hashed": hashlib.sha1(filename.encode()).hexdigest() 
-            }
-            source_img.append(_dict)
+                #        _dict = {                "filename": filename,                "hashed": hashlib.sha1(filename.encode()).hexdigest()             }
+            source_img.append(filename)
         break
     
-    return flask.render_template('index.html', sources = source_img, bgs = bg_img)
+    _category_data = {}
+    with open("./static/source/category.json") as json_file:
+        _category_data = json.load(json_file)
+    for category in _category_data:
+        for index in range(len(_category_data[category])):
+            img = _category_data[category][index]
+            if "." not in img:
+                img+=".png"
+                _category_data[category][index] = img
+            print(img)
+            source_img.remove(img)
+    _category_data['未分類 Uncategorized'] = source_img
+    print(_category_data)
+    return flask.render_template('index.html', bgs = bg_img, categories = _category_data)
 
 @app.route('/function/submit', methods = ['POST'])
 def submit():

@@ -70,6 +70,14 @@ p {
     overflow-x: hidden;
 }
 
+#source-box h4 {
+    color: white;
+    font-weight: bold;
+    border-bottom: 1px solid;    
+    padding-bottom: 1rem;
+    margin-top: 2rem;
+}
+
 #source-box .source-img {
     background-color: white;
     background-position: center center;
