@@ -9,6 +9,9 @@
 * 背景圖片放置於 static/source/bg
 * 程式於執行時會自動產生thumb縮圖
 
+# 來源分類
+* 修改 static/source/category.json 即可
+
 # how to run
 1. 建立python3 virtual enviroment
 2. 設置好DATABASE_URL環境變數和config.py
