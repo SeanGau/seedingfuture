@@ -119,6 +119,17 @@ button[title="download"] {
     margin: auto;
 }
 
+#collage-area {
+    display: flex;
+    position: absolute;
+    width: 100%;
+    height: 100%;
+    top: 0;
+    left: 0;
+    align-items: center;
+    justify-content: center;
+}
+
 #collage-background {
     background-color: #FFF;
     position: absolute;
@@ -134,17 +145,6 @@ button[title="download"] {
     opacity: 0.4;
     width: 100%;
     height: 100%;
-}
-
-#collage-area {
-    display: flex;
-    position: absolute;
-    width: 100%;
-    height: 100%;
-    top: 0;
-    left: 0;
-    align-items: center;
-    justify-content: center;
 }
 
 .target {

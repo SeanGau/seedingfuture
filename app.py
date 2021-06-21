@@ -10,6 +10,12 @@ app.jinja_env.globals['GLOBAL_TITLE'] = "未來種子｜Seeding Future"
 app.jinja_env.globals['GLOBAL_VERSION'] = datetime.now().timestamp()
 db = SQLAlchemy(app)
 
+@app.route('/works')
+def works():
+        cb = db.session.execute(f"SELECT * FROM public.collage_datas;").all()
+        return flask.render_template('works.html', works_data = cb)
+
+
 @app.route('/loadfile', methods = ['GET', 'POST'])
 def loadfile():
     if flask.request.method == 'POST':
