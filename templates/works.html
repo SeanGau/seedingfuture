@@ -17,26 +17,34 @@
 </head>
 
 <body>
-    <div id="preview-box">
-        <div id="collage-box">
-            <div id="collage-background">
-                <img id="image-background"></img>
+    <div class="container-fluid h-100">
+        <div class="row h-100">
+            <div class="col-6">
+                <div class="row">
+                    <h5 id="collage-title">作品名稱 - <span></span></h5>
+                    <h5 id="collage-name">作者 - <span></span></h5>
+                    <h5 id="collage-email">聯絡email - <span></span></h5>
+                    <a role="button" class="btn btn-primary my-2" id="download">下載圖片</a>
+                </div>
+                <hr>
+                <div class="row">
+                    {% for data in works_data %}
+                    <p><a data-target="{{loop.index0}}" href="#" class="data-link">{{data['data']['data']['name']}} -
+                            {{data['data']['data']['title']}}</a></p>
+                    {% endfor %}
+                </div>
             </div>
-            <div id="collage-area"></div>
+            <div class="col-6">
+                <div id="preview-box">
+                    <div id="collage-box">
+                        <div id="collage-background">
+                            <img id="image-background"></img>
+                        </div>
+                        <div id="collage-area"></div>
+                    </div>
+                </div>
+            </div>
         </div>
-    </div>
-    <div class="container">
-        <div class="m-2">
-            <h5 id="collage-title">作品名稱 - <span></span></h5>
-            <h5 id="collage-name">作者 - <span></span></h5>
-            <h5 id="collage-email">聯絡email - <span></span></h5>
-            <a role="button" class="btn btn-primary my-2" id="download">下載圖片</a>
-        </div>
-        <hr>
-        {% for data in works_data %}
-        <p><a data-target="{{loop.index0}}" href="#" class="data-link">{{data['data']['data']['name']}} -
-                {{data['data']['data']['title']}}</a></p>
-        {% endfor %}
     </div>
     <script src="https://kit.fontawesome.com/cc94f52acd.js" crossorigin="anonymous"></script>
     <script src="https://code.jquery.com/jquery-3.6.0.min.js"
@@ -69,6 +77,10 @@
             $("#collage-area").html("");
             let orig_w = data['data']['width'];
             let orig_h = data['data']['height'];
+            if (orig_w == 0)
+                orig_w = 1080;
+            if (orig_h == 0)
+                orig_h = 1920;
             $("#collage-box").width(orig_w);
             $("#collage-box").height(orig_h);
             $("#collage-title span").text("");
@@ -95,7 +107,9 @@
                 var date = new Date();
                 var time = `${date.getFullYear()}-${date.getMonth() + 1}-${date.getDay() + 1}`;
 
-                link.download = `seedingfuture_${time}.png`;
+                let title = $("#collage-title span").text();
+                let name = $("#collage-name span").text();
+                link.download = `${name}_${title}.png`;
                 link.href = img;
                 link.click();
             });

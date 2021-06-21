@@ -1,6 +1,9 @@
-#preview-box {
-    height: 50vh;
+html, body {
+    height: 100%;
     width: 100%;
+}
+
+#preview-box {
     overflow: auto;
     border: 1px solid black;
 }
@@ -50,4 +53,9 @@
     user-select: none;
     height: 100%;
     width: 100%;
+}
+
+.col-6 {
+    height: 100%;
+    overflow: auto;
 }
