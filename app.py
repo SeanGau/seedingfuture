@@ -10,6 +10,28 @@ app.jinja_env.globals['GLOBAL_TITLE'] = "未來種子｜Seeding Future"
 app.jinja_env.globals['GLOBAL_VERSION'] = datetime.now().timestamp()
 db = SQLAlchemy(app)
 
+for (dirpath, dirnames, filenames) in os.walk("./static/source/bg"):
+    for filename in filenames:
+        #read the image
+        if not os.path.exists("./static/source/bg/thumb/"+filename):            
+            im = Image.open("./static/source/bg/"+filename)
+            im.thumbnail((2000,2000))
+            nim = im.crop((0,0,200,200))
+            nim.save("./static/source/bg/thumb/"+filename)
+    break
+
+for (dirpath, dirnames, filenames) in os.walk("./static/source"):
+    for filename in filenames:
+        if filename == "category.json":
+            continue
+        #read the image
+        if not os.path.exists("./static/source/thumb/"+filename):
+            im = Image.open("./static/source/"+filename)
+            im.thumbnail((150,150))
+            im.save("./static/source/thumb/"+filename)
+    break
+    
+
 @app.route('/works')
 def works():
         cb = db.session.execute(f"SELECT * FROM public.collage_datas;").all()
@@ -50,7 +72,7 @@ def index():
             #read the image
             if not os.path.exists("./static/source/thumb/"+filename):
                 im = Image.open("./static/source/"+filename)
-                im.thumbnail((200,200))
+                im.thumbnail((150,150))
                 im.save("./static/source/thumb/"+filename)
                 #        _dict = {                "filename": filename,                "hashed": hashlib.sha1(filename.encode()).hexdigest()             }
             source_img.append(filename)

@@ -4,12 +4,18 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <meta property="og:image" content={{url_for( 'static', filename='main_img.jpg' )}}>
-    <link rel="icon" type="image/ico" href={{url_for( 'static', filename='favicon.ico' )}}>
-    <link rel="stylesheet" href={{url_for( 'static', filename='reset.css' , version=GLOBAL_VERSION )}}>
-    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
-    <link rel="stylesheet" href={{url_for( 'static', filename='index.css' , version=GLOBAL_VERSION )}}>
-    <link href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;400;700&amp;family=Noto+Serif+TC:wght@200;400;700&amp;display=swap" rel="stylesheet" />
+    <meta property="og:image" content={{url_for( 'static' , filename='main_img.jpg' )}}>
+    <link rel="icon" type="image/ico" href={{url_for( 'static' , filename='favicon.ico' )}}>
+    <link rel="stylesheet" href={{url_for( 'static' , filename='reset.css' , version=GLOBAL_VERSION )}}>
+    <link href="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/css/bootstrap.min.css" rel="stylesheet"
+        integrity="sha384-BmbxuPwQa2lc/FVzBcNJ7UAyJxM6wuqIj61tLrc4wSX0szH/Ev+nYRRuWlolflfl" crossorigin="anonymous">
+    <link rel="stylesheet" href={{url_for( 'static' , filename='index.css' , version=GLOBAL_VERSION )}}>
+    <link
+        href="https://fonts.googleapis.com/css2?family=Noto+Sans+TC:wght@100;400;700&amp;family=Noto+Serif+TC:wght@200;400;700&amp;display=swap"
+        rel="stylesheet" />
+    {% for source in categories[category] %}
+    <link rel="prefetch" href="{{url_for('static', filename='source/thumb/'+source)}}" />
+    {% endfor %}
     <title>{{GLOBAL_TITLE}}</title>
 </head>
 
@@ -24,20 +30,33 @@
                     </div>
                     <div class="modal-body p-4">
                         <p>計劃概要：</p>
-                        <p>細着藝術發起的《未來種子-熱帶雨林計畫》為與自然、科學和熱帶雨林相遇的永續性藝術計劃。主要從藝術角度驅動跨領域合作，從文化、科學和教育角度探討熱帶雨林與環境保育議題，邀請各領域研究者、創作者與民眾，於生態觀察和工作坊過程中，共同協作及促進交流對話。</p>
-                        <p>短期間以藝術作為起點，搭建國際之間、研究機構、和地方⺠間機構的橋樑，提高台灣於生態保育貢獻的能見度。預計在未來三至五年開展成可持續性的新創項目，建立社群，讓文化和地方交集擁有再次創造新思維的機會。</p>
+                        <p>細着藝術發起的《未來種子-熱帶雨林計畫》為與自然、科學和熱帶雨林相遇的永續性藝術計劃。主要從藝術角度驅動跨領域合作，從文化、科學和教育角度探討熱帶雨林與環境保育議題，邀請各領域研究者、創作者與民眾，於生態觀察和工作坊過程中，共同協作及促進交流對話。
+                        </p>
+                        <p>短期間以藝術作為起點，搭建國際之間、研究機構、和地方⺠間機構的橋樑，提高台灣於生態保育貢獻的能見度。預計在未來三至五年開展成可持續性的新創項目，建立社群，讓文化和地方交集擁有再次創造新思維的機會。
+                        </p>
                         <p>Project summary:</p>
-                        <p>The "Seeding Future: Tropical Rainforest Project" initiated by SUAVEART is a sustainable art project, meeting with nature, science, and rainforest. It mainly drives cross-field cooperation from the artistic perspective. We discuss
-                            tropical rainforest and environmental conservation issues in conjunction with art, science, and education. Meanwhile, invited researchers, creators, and the public is welcome to collaborate and exchange dialogues via ecological
+                        <p>The "Seeding Future: Tropical Rainforest Project" initiated by SUAVEART is a sustainable art
+                            project, meeting with nature, science, and rainforest. It mainly drives cross-field
+                            cooperation from the artistic perspective. We discuss
+                            tropical rainforest and environmental conservation issues in conjunction with art, science,
+                            and education. Meanwhile, invited researchers, creators, and the public is welcome to
+                            collaborate and exchange dialogues via ecological
                             observation and workshops.</p>
-                        <p>In a short period, to increase the visibility of Taiwan's contribution to ecological conservation, we regard art as a starting point to bridge international resources with research institutions and local institutions. In the next
-                            three to five years, we expect to launch more sustainable projects and establish the communities so that the intersection of culture and place will have the opportunity to create new ideas again.</p>
+                        <p>In a short period, to increase the visibility of Taiwan's contribution to ecological
+                            conservation, we regard art as a starting point to bridge international resources with
+                            research institutions and local institutions. In the next
+                            three to five years, we expect to launch more sustainable projects and establish the
+                            communities so that the intersection of culture and place will have the opportunity to
+                            create new ideas again.</p>
                         <p>2019-20｜傳承與創造 Inheritance and creativity</p>
                         <p>2020-21｜植物標本與環境發言 Herbarium and Environment speaks</p>
-                        <p>了解更多 More： <a href="https://seedingfuture.travel.blog/" target="_blank">https://seedingfuture.travel.blog/</a></p>
+                        <p>了解更多 More： <a href="https://seedingfuture.travel.blog/"
+                                target="_blank">https://seedingfuture.travel.blog/</a></p>
                         <hr>
                         <p>
-                            開源程式碼 Open source codes: <a href="https://github.com/SeanGau/seedingfuture" target="_blank">github</a><br> 程式授權 Codes license: GNU GPL V3<br> 文字、圖像、內容授權 Contents license: CC-BY 4.0
+                            開源程式碼 Open source codes: <a href="https://github.com/SeanGau/seedingfuture"
+                                target="_blank">github</a><br> 程式授權 Codes license: GNU GPL V3<br> 文字、圖像、內容授權 Contents
+                            license: CC-BY 4.0
                         </p>
                     </div>
                 </div>
@@ -69,7 +88,9 @@
                             </div>
                             <div class="form-text">
                                 <p>
-                                    若您同意將您的創作提供予《未來種子 Seedingfuture》計畫使用，請正確填寫姓名及郵箱。若不願提供，欄位留空即可。<br> If you agree to provide your creation to Project "Seeding Future", please fill in the info correctly. If you do not want to provide it, please leave
+                                    若您同意將您的創作提供予《未來種子 Seedingfuture》計畫使用，請正確填寫姓名及郵箱。若不願提供，欄位留空即可。<br> If you agree to
+                                    provide your creation to Project "Seeding Future", please fill in the info
+                                    correctly. If you do not want to provide it, please leave
                                     it blank.
                                 </p>
                                 <p><b>※圖像、內容授權 Contents license: CC-BY 4.0※</b></p>
@@ -94,10 +115,13 @@
                     </div>
                     <div class="modal-body container" style="max-height: 50vh; overflow-y: auto; overflow-x: hidden;">
                         <div class="row g-2">
-                            {% for bg in bgs %} {% set bg_url = url_for('static', filename='source/bg/'+bg['filename'])%} {% set thumb_url = url_for('static', filename='source/bg/thumb/'+bg['filename'])%}
+                            {% for bg in bgs %} {% set bg_url = url_for('static',
+                            filename='source/bg/'+bg['filename'])%} {% set thumb_url = url_for('static',
+                            filename='source/bg/thumb/'+bg['filename'])%}
                             <div class="col-6">
                                 <a href="#">
-                                    <div class="bg-img" style="background-image: url({{thumb_url}});" data-src={{bg_url}}>
+                                    <div class="bg-img" style="background-image: url({{thumb_url}});"
+                                        data-src={{bg_url}}>
                                     </div>
                                 </a>
                             </div>
@@ -111,59 +135,115 @@
     <div class="d-flex flex-column h-100">
         <div id="header">
             {{GLOBAL_TITLE}}
-            <a role="button" class="btn btn-outline-light mx-4" title="about" data-bs-toggle="modal" data-bs-target="#aboutModal">關於</a>
+            <a role="button" class="btn btn-outline-light mx-4" title="about" data-bs-toggle="modal"
+                data-bs-target="#aboutModal">關於</a>
         </div>
         <div class="flex-grow-1 d-flex p-3">
             <div id="collage-source">
                 <div id="collage-tools">
-                    <button class="btn btn-primary btn-lg" type="button" title="download" data-bs-toggle="modal" data-bs-target="#submitModal"><i class="fas fa-file-download"></i></button>
+                    <button class="btn btn-primary btn-lg" type="button" title="download" data-bs-toggle="modal"
+                        data-bs-target="#submitModal"><i class="fas fa-file-download"></i></button>
                     <div class="moveable-buttons d-none">
-                        <button class="btn btn-danger mt-1 target-control" type="button" title="delete｜刪除 (Del)" name="collage-remove"><i class="far fa-trash-alt"></i></button>
-                        <button class="btn btn-secondary mt-1 target-control" type="button" title="Bring Top｜至頂" name="collage-to-top"><i class="fas fa-angle-double-up"></i></button>
-                        <button class="btn btn-secondary mt-1 target-control" type="button" title="Bring Forward｜前移一層 (PgUp)" name="collage-up"><i class="fas fa-chevron-up"></i></button>
-                        <button class="btn btn-secondary mt-1 target-control" type="button" title="Send Backward｜後移一層 (PgDn)" name="collage-down"><i class="fas fa-chevron-down"></i></button>
-                        <button class="btn btn-secondary mt-1 target-control" type="button" title="Send Bottom｜至底" name="collage-to-bottom"><i class="fas fa-angle-double-down"></i></button>
-                        <button class="btn btn-secondary mt-1 target-control" type="button" title="Flip Horizontal｜水平翻轉 (x)" name="collage-flip"><i class="fas fa-exchange-alt"></i></button>
+                        <button class="btn btn-danger mt-1 target-control" type="button" title="delete｜刪除 (Del)"
+                            name="collage-remove"><i class="far fa-trash-alt"></i></button>
+                        <button class="btn btn-secondary mt-1 target-control" type="button" title="Bring Top｜至頂"
+                            name="collage-to-top"><i class="fas fa-angle-double-up"></i></button>
+                        <button class="btn btn-secondary mt-1 target-control" type="button"
+                            title="Bring Forward｜前移一層 (PgUp)" name="collage-up"><i
+                                class="fas fa-chevron-up"></i></button>
+                        <button class="btn btn-secondary mt-1 target-control" type="button"
+                            title="Send Backward｜後移一層 (PgDn)" name="collage-down"><i
+                                class="fas fa-chevron-down"></i></button>
+                        <button class="btn btn-secondary mt-1 target-control" type="button" title="Send Bottom｜至底"
+                            name="collage-to-bottom"><i class="fas fa-angle-double-down"></i></button>
+                        <button class="btn btn-secondary mt-1 target-control" type="button"
+                            title="Flip Horizontal｜水平翻轉 (x)" name="collage-flip"><i
+                                class="fas fa-exchange-alt"></i></button>
                     </div>
                     <div class="source-controls">
-                        <button class="btn btn-warning mr-1" type="button" title="add" name="collage-add"><i class="fas fa-plus"></i></button>
-                        <button class="btn btn-danger mr-1" type="button" title="clear" name="collage-clear"><i class="fas fa-undo-alt"></i></button>
-                        <button class="btn btn-secondary mr-1" type="button" title="background" data-bs-toggle="modal" data-bs-target="#bgModal"><i class="fas fa-fill-drip"></i></button>
+                        <button class="btn btn-warning mr-1" type="button" title="add" name="collage-add"><i
+                                class="fas fa-plus"></i></button>
+                        <button class="btn btn-danger mr-1" type="button" title="clear" name="collage-clear"><i
+                                class="fas fa-undo-alt"></i></button>
+                        <button class="btn btn-secondary mr-1" type="button" title="background" data-bs-toggle="modal"
+                            data-bs-target="#bgModal"><i class="fas fa-fill-drip"></i></button>
                     </div>
                 </div>
-                <div id="source-box" class="container p-3">
-                    <div class="row g-2">
-                        {% for category in categories %}
-                        <h4>{{category}}</h4>
-                        {% for source in categories[category] %} {% set source_url = url_for('static', filename='source/'+source)%} {% set thumb_url = url_for('static', filename='source/thumb/'+source)%}
-                        <div class="col-md-4">
-                            <a href="#">
-                                <div class="source-img" style="background-image: url({{thumb_url}});" data-src={{source_url}}>
-                                </div>
-                            </a>
+                <div id="source-box" class="container">
+                    <div class="row sticky-top">
+                        <div class="col">
+                            <ul class="nav nav-pills" id="source-tab" role="tablist">
+                                {% for category in categories %}
+                                <li class="nav-item" role="presentation">
+                                    {% if loop.index == 1 %}
+                                    <button class="nav-link text-light active" id="pills-category{{loop.index}}-tab"
+                                        data-bs-toggle="pill" data-bs-target="#pills-category{{loop.index}}"
+                                        type="button" role="tab" aria-controls="pills-category{{loop.index}}"
+                                        aria-selected="true">
+                                        {% else %}
+                                        <button class="nav-link text-light" id="pills-category{{loop.index}}-tab"
+                                            data-bs-toggle="pill" data-bs-target="#pills-category{{loop.index}}"
+                                            type="button" role="tab" aria-controls="pills-category{{loop.index}}"
+                                            aria-selected="false">
+                                            {% endif %}
+                                            {{category}}
+                                        </button>
+                                </li>
+                                {% endfor %}
+                            </ul>
                         </div>
-                        {% endfor %}
-                        {% endfor %}
+                    </div>
+                    <div class="row">
+                        <div class="tab-content pb-2" id="pills-tabContent">
+                            {% for category in categories %}
+                            {% if loop.index == 1 %}
+                            <div class="tab-pane fade show active" id="pills-category{{loop.index}}" role="tabpanel"
+                                aria-labelledby="pills-category{{loop.index}}-tab">
+                                {% else %}
+                                <div class="tab-pane fade" id="pills-category{{loop.index}}" role="tabpanel"
+                                    aria-labelledby="pills-category{{loop.index}}-tab">
+                                    {% endif %}
+                                    <div class="row g-2">
+                                        {% for source in categories[category] %} {% set source_url = url_for('static',
+                                        filename='source/'+source)%} {% set thumb_url = url_for('static',
+                                        filename='source/thumb/'+source)%}
+                                        <div class="col-md-4">
+                                            <a href="#">
+                                                <div class="source-img" style="background-image: url({{thumb_url}});"
+                                                    data-src={{source_url}}>
+                                                </div>
+                                            </a>
+                                        </div>
+                                        {% endfor %}
+                                    </div>
+                                </div>
+                                {% endfor %}
+                            </div>
+                        </div>
                     </div>
                 </div>
-            </div>
-            <div id="collage-box">
-                <div id="collage-background">
-                    <img id="image-background"></img>
+                <div id="collage-box">
+                    <div id="collage-background">
+                        <img id="image-background"></img>
+                    </div>
+                    <div id="collage-area"></div>
                 </div>
-                <div id="collage-area"></div>
             </div>
         </div>
-    </div>
 
-    <div id="loading" class="d-none">
-        <img src="{{url_for('static', filename='loading.svg' )}}" alt="">
-    </div>
-    <script src="https://kit.fontawesome.com/cc94f52acd.js" crossorigin="anonymous"></script>
-    <script src="https://code.jquery.com/jquery-3.6.0.min.js" integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js" integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi" crossorigin="anonymous"></script>
-    <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js" integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG" crossorigin="anonymous"></script>
-    <script src="//daybrush.com/moveable/release/latest/dist/moveable.min.js"></script>
-    <script src={{url_for( 'static', filename='html2canvas.min.js' )}}></script>
-    <script src={{url_for( 'static', filename='index.js' , version=GLOBAL_VERSION )}}></script>
+        <div id="loading" class="d-none">
+            <img src="{{url_for('static', filename='loading.svg' )}}" alt="">
+        </div>
+        <script src="https://kit.fontawesome.com/cc94f52acd.js" crossorigin="anonymous"></script>
+        <script src="https://code.jquery.com/jquery-3.6.0.min.js"
+            integrity="sha256-/xUj+3OJU5yExlq6GSYGSHk7tPXikynS7ogEvDej/m4=" crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/@popperjs/core@2.6.0/dist/umd/popper.min.js"
+            integrity="sha384-KsvD1yqQ1/1+IA7gi3P0tyJcT3vR+NdBTt13hSJ2lnve8agRGXTTyNaBYmCR/Nwi"
+            crossorigin="anonymous"></script>
+        <script src="https://cdn.jsdelivr.net/npm/bootstrap@5.0.0-beta2/dist/js/bootstrap.min.js"
+            integrity="sha384-nsg8ua9HAw1y0W1btsyWgBklPnCUAFLuTMS2G72MMONqmOymq585AcH49TLBQObG"
+            crossorigin="anonymous"></script>
+        <script src="//daybrush.com/moveable/release/latest/dist/moveable.min.js"></script>
+        <script src={{url_for( 'static' , filename='html2canvas.min.js' )}}></script>
+        <script src={{url_for( 'static' , filename='index.js' , version=GLOBAL_VERSION )}}></script>
 </body>

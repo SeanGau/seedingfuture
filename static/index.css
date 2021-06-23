@@ -66,8 +66,15 @@ p {
 #source-box {
     height: 100%;
     width: 100%;
-    overflow-y: auto;
+    overflow-y: scroll;
     overflow-x: hidden;
+}
+
+#source-box .sticky-top {
+    background-color: #666;
+    padding: 1rem;
+    margin-bottom: 1rem;
+    border-bottom: 1px solid #AAA;
 }
 
 #source-box h4 {
