@@ -99,6 +99,10 @@ p {
     filter: opacity(1);
 }
 
+.nav-pills .nav-link.active, .nav-pills .show>.nav-link {
+    background-color: #6c757d;
+}
+
 #collage-tools {
     position: absolute;
     width: 18em;
