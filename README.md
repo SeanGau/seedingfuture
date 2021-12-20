@@ -20,3 +20,6 @@
 pip3 install -r requirement.txt
 python3 app.py
 ```
+
+# 流程圖
+![seedingfuture運作流程](https://user-images.githubusercontent.com/12148555/146792598-362cb447-5358-4081-8a7a-ab9aa6bcf6b2.jpg)
